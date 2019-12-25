@@ -1,0 +1,26 @@
+name: test-container image build
+
+on:
+  push:
+    branches:
+      - "master"
+    paths:
+      - ".github/workflows/test-container.yml"
+      - "test/container/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build image and publish
+        # will be replace with own code later
+        uses: elgohr/Publish-Docker-Github-Action@2.11
+        with:
+          name: devops-247114/deployers-test-container
+          username: _json_key
+          password: ${{ secrets.GCR_PASSWORD }}
+          workdir: test/test-container
+          snapshot: true
+          registry: eu.gcr.io
