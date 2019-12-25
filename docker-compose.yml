@@ -1,0 +1,9 @@
+version: "3"
+services:
+  test-container:
+    image: eu.gcr.io/devops-247114/deployers-test-container:201912252224056f8249
+    ports:
+      - "20022:22"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+

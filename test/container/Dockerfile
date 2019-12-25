@@ -5,7 +5,11 @@ RUN apt-get update && \
     # Won't start without
     mkdir /var/run/sshd
 
-RUN  echo 'root:root' | chpasswd
+RUN useradd ops --groups docker && \
+    mkdir /home/ops && \
+    chown ops /home/ops && \
+    echo 'ops:password' | chpasswd && \
+    mkdir /home/ops/deployments
 
 EXPOSE 22
 
