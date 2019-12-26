@@ -53,7 +53,13 @@ jobs:
           command: |
             # Authorized key
             echo ${SSH_PRIVATE_KEY} > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+
             echo ${SSH_PUB_KEY} > ~/.ssh/id_rsa.pub
+            chmod 644 ~/.ssh/id_rsa.pub
+
+            ssh-add
+
             # Config
             cp test/setup/ssh.config ~/.ssh/config
       - run:
