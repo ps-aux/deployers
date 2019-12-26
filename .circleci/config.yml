@@ -2,8 +2,14 @@ version: 2
 
 jobs:
   build:
+    environment:
+      FOO: bar
     docker:
       - image: circleci/node:13.2.0
+      - image: eu.gcr.io/devops-247114/deployers-test-container:201912261303391f4dd9
+        environment:
+          SSH_AUTHORIZED_KEY: ${FOO}
+
     steps:
       - checkout
       - restore_cache:
