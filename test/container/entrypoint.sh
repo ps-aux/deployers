@@ -18,4 +18,6 @@ if [[ ! -z ${ssh_key} ]];then
 
     mv ${tmp_file}  ${ssh_dir}/authorized_keys
 fi
+
+echo "Starting SSH daemon"
 /usr/sbin/sshd -D
