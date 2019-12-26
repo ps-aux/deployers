@@ -6,7 +6,7 @@ import { createSshApi } from 'src/remote/SshRemoteApi'
 describe('manual integration tests', () => {
     const sshOpts = {
         host: 'localhost',
-        port: 20022,
+        port: 22,
         user: 'ops'
     }
 
