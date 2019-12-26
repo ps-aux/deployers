@@ -1,12 +1,12 @@
 version: "3"
 services:
   test-container:
-    image: eu.gcr.io/devops-247114/deployers-test-container:201912261318200e2309
+    image: eu.gcr.io/devops-247114/deployers-test-container:v101
     ports:
       - "20022:22"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - "${HOME}/.ssh/id_rsa.pub:/home/ops/.ssh/authorized_keys"
+#      - "${HOME}/.ssh/id_rsa.pub:/home/ops/.ssh/authorized_keys"
     environment:
-      SSH_AUTHORIZED_KEY: 1234
+      SSH_AUTHORIZED_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9Nj7rkgcycjLH7RSrRCQ5tUZ9as7TJqo0v0yctZAE0a6tL13ULo8Gl5VIsrmZV+CBYbrzX2cPSr4fzy4DuRCReyJ/kJvjXFzEEwJy8ptZSFEYzxO/BG1N6m5YITgYJ1SHtAY6SOmYUFuxanOW9BydGePvkc5duZStT9GPczc3UmrHUDSnssCjKEkp3qObC7db6Qwyc2vfGP//P6V2Mi/bjHH+e2lFm2toaUrVbey0bLdrdpKg+czkx2VbfZ9oraM4STwK0Ieru/D+vqoKR5PWyzaSrxigaZ7pXCs5YoEEn/8lDOmmpbj3iv+Pvn+D0QAmHwKWEeRtb1seFRC/9qDb arkonix@archangel"
 

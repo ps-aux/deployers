@@ -30,7 +30,7 @@ jobs:
             echo ${SSH_PUB_KEY} > ~/.ssh/id_rsa.pub
             chmod 644 ~/.ssh/id_rsa.pub
 
-#            ssh-add
+            #ssh-add
 
             # Config
             cp test/setup/ssh.config ~/.ssh/config
