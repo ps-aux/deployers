@@ -8,6 +8,7 @@ RUN apt-get update && \
 RUN useradd ops --groups docker && \
     mkdir /home/ops && \
     chown ops /home/ops && \
+    chsh --shel /bin/bash ops && \
     echo 'ops:password' | chpasswd && \
     mkdir /home/ops/deployments
 
