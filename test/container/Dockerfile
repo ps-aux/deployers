@@ -14,4 +14,6 @@ RUN useradd ops --groups docker && \
 
 EXPOSE 22
 
-CMD ["/usr/sbin/sshd", "-D"]
+COPY ./entrypoint.sh /
+
+CMD ["/entrypoint.sh"]
