@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 ssh_key=${SSH_AUTHORIZED_KEY}
-echo "Running test container. SSH_AUTHORIZED_KEY=${ssh_key}"
+echo "Running test container. SSH_AUTHORIZED_KEY='${ssh_key}'"
 
 test -z "${ssh_key}" && echo "No SSH key provided"
 
