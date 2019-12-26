@@ -3,13 +3,11 @@ version: 2
 jobs:
   build:
     environment:
-      SSH_PUB_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDA6tNSgBkWjnwnYuZUQB0oRGrv/IYlzyvUQRhm8eabgbhWaeGNarohkWXJgWw8s9BeAQm5z9wyHZ0vkdAIEtIJZLT1LTKFr8o9P4fzZUDVuGdRTA253q65lREb3yG9WjEEkCfIczzHwr+Pce68DRl9ZfMSeSYtweHDrjy98FW7yyJL3fkx0exVa6B1gKc6NAi4tZFyqH0sgOS1axXjusoUeXw9ouF1XBprDL0V762APpO+7YpuMTODLLcWHDQhR9dhjnncCaB2HZ+ptOCMtqKRFkBkfUjjHLboEyCGjjCZonEbqb7DdlZbRc0HhdBJM/Cd//nHOzon7w8HjH+YI9OB circleci@71f021696457"
     docker:
       - image: circleci/node:13.2.0
       - image: eu.gcr.io/devops-247114/deployers-test-container:v101
         environment:
           SSH_AUTHORIZED_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDA6tNSgBkWjnwnYuZUQB0oRGrv/IYlzyvUQRhm8eabgbhWaeGNarohkWXJgWw8s9BeAQm5z9wyHZ0vkdAIEtIJZLT1LTKFr8o9P4fzZUDVuGdRTA253q65lREb3yG9WjEEkCfIczzHwr+Pce68DRl9ZfMSeSYtweHDrjy98FW7yyJL3fkx0exVa6B1gKc6NAi4tZFyqH0sgOS1axXjusoUeXw9ouF1XBprDL0V762APpO+7YpuMTODLLcWHDQhR9dhjnncCaB2HZ+ptOCMtqKRFkBkfUjjHLboEyCGjjCZonEbqb7DdlZbRc0HhdBJM/Cd//nHOzon7w8HjH+YI9OB circleci@71f021696457"
-          _SSH_AUTHORIZED_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDeXe4jwec6DIQRij4aO8pnQXFFGG7cVsuwTxPB1tnrJPaK4MMS+bjx8Iy4Vctiy/ETAy3wE/vIk+gsldBOrPxv1TvjDDBFswc6SGmrH23IUTVEs9BvuhxG1FlZCAScDO29aC9oiY+pIYBofp9Gf0JNrwpxS5VJDJphZV+8ei9LWOJVbpGvCFSqVBd7aqAI8jMFw/aCGiqg8T7kVccCCbjxpwjkGJSnJeX0kClhUwUAvSi5flp9gnWXy6W/ZZdCbj/c3JveBoyI3114zeuuWjF8Vb0NATxN2t6gtc7schxXXWKMZViirPqUYzYxmb85nPgtfJ2XTH8hlwURwbzyxm2b circleci@958b67ece0a5"
     steps:
       - checkout
       - restore_cache:
