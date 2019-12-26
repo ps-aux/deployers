@@ -4,8 +4,7 @@ jobs:
   build:
     environment:
       SSH_PUB_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDA6tNSgBkWjnwnYuZUQB0oRGrv/IYlzyvUQRhm8eabgbhWaeGNarohkWXJgWw8s9BeAQm5z9wyHZ0vkdAIEtIJZLT1LTKFr8o9P4fzZUDVuGdRTA253q65lREb3yG9WjEEkCfIczzHwr+Pce68DRl9ZfMSeSYtweHDrjy98FW7yyJL3fkx0exVa6B1gKc6NAi4tZFyqH0sgOS1axXjusoUeXw9ouF1XBprDL0V762APpO+7YpuMTODLLcWHDQhR9dhjnncCaB2HZ+ptOCMtqKRFkBkfUjjHLboEyCGjjCZonEbqb7DdlZbRc0HhdBJM/Cd//nHOzon7w8HjH+YI9OB circleci@71f021696457"
-      SSH_PRIVATE_KEY: |
-                        -----BEGIN RSA PRIVATE KEY-----
+      SSH_PRIVATE_KEY: "-----BEGIN RSA PRIVATE KEY-----
                         MIIEpQIBAAKCAQEAwOrTUoAZFo58J2LmVEAdKERq7/yGJc8r1EEYZvHmm4G4Vmnh
                         jWq6IZFlyYFsPLPQXgEJuc/cMh2dL5HQCBLSCWS09S0yha/KPT+H82VA1bhnUUwN
                         ud6uuZURG98hvVoxBJAnyHM8x8K/j3HuvA0ZfWXzEnkmLcHhw648vfBVu8siS935
@@ -31,7 +30,7 @@ jobs:
                         jDz+F1ECgYEAtU8HKxn4g7yuKIhDYPu7fdeUHarqlKZbiEt77bB+lIzunwWFhlII
                         sp4EtzOIJ+7/mwI4mMDxW/j5OAkzgrPS7ufp9gIsol1L5rH11lpHkVsZvlMo3XRQ
                         8tWOn9Y7ET7+boZxh0o/D3B3c1VIUemf9FxYa6zAMQJ7Yf8SjpaV4KU=
-                        -----END RSA PRIVATE KEY-----
+                        -----END RSA PRIVATE KEY-----"
     docker:
       - image: circleci/node:13.2.0
       - image: eu.gcr.io/devops-247114/deployers-test-container:v101
@@ -58,7 +57,7 @@ jobs:
             echo ${SSH_PUB_KEY} > ~/.ssh/id_rsa.pub
             chmod 644 ~/.ssh/id_rsa.pub
 
-            ssh-add
+#            ssh-add
 
             # Config
             cp test/setup/ssh.config ~/.ssh/config
