@@ -1,9 +1,5 @@
-import {
-    CopyTextFileOpts,
-    RemoteCommandExecutor,
-    RemoteFileApi
-} from 'src/remote/index'
-import { LocalPath, Logger, SshOpts } from 'src/types'
+import { CopyTextFileOpts } from 'src/remote/index'
+import { LocalPath, Logger, RemoteApi, SshOpts } from 'src/types'
 import { execSync } from 'child_process'
 
 const connectionArg = (opts: SshOpts) => {
@@ -40,7 +36,7 @@ const sshCmd = (
         stdio: ['inherit', returnStdout ? undefined : 'inherit', 'inherit']
     })
 
-    if (returnStdout) return res.toString()
+    if (returnStdout) return res.toString().trim()
     return null
 }
 
@@ -68,13 +64,14 @@ const ensureLocalPath = (path: LocalPath) => {
         throw new Error(`${path} starts with '/' or '..'. This is not allowed`)
 }
 
-class SshApi implements RemoteFileApi, RemoteCommandExecutor {
+class SshApi implements RemoteApi {
     readonly opts: SshOpts
     readonly log: Logger
 
     constructor(opts: SshApiOpts) {
         this.opts = opts.ssh
         this.log = opts.log || (() => undefined)
+        this.ensureNotRoot()
     }
 
     copyTextFile = (
@@ -117,6 +114,12 @@ class SshApi implements RemoteFileApi, RemoteCommandExecutor {
         if (res != null) return res.trim()
 
         return null
+    }
+
+    private ensureNotRoot = () => {
+        const userName = sshCmd('whoami', this.opts, true)
+        if (userName === 'root')
+            throw new Error('SSH user is root. This is now allowed.')
     }
 }
 

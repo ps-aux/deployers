@@ -19,14 +19,14 @@ describe('manual integration tests', () => {
 
         expect(res).toBeNull()
 
-        // In another dir
+        // In another srcDir
         ssh.ensureDir('foo')
         res = ssh.execRemoteCmd('foo', 'pwd', true)
 
         expect(res).toBe('/home/ops/foo')
     })
 
-    it('copy file to nonexisting dir', () => {
+    it('copy file to nonexisting srcDir', () => {
         ssh.ensureDir('foo')
         ssh.copyTextFile('foo', 'a/b/file.txt', 'this is file content', {
             createIntermediateDirs: true
