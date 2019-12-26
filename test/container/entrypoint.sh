@@ -3,6 +3,7 @@ set -e
 ssh_key=${SSH_AUTHORIZED_KEY}
 echo "Running test container. SSH_AUTHORIZED_KEY=${ssh_key}"
 
+test -z ${ssh_key} && echo "No SSH key provided"
 
 if [[ ! -z ${ssh_key} ]];then
     ssh_dir="/home/ops/.ssh"
