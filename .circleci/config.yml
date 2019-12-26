@@ -34,7 +34,7 @@ jobs:
                         -----END RSA PRIVATE KEY-----
     docker:
       - image: circleci/node:13.2.0
-      - image: eu.gcr.io/devops-247114/deployers-test-container:20191226134045470501
+      - image: eu.gcr.io/devops-247114/deployers-test-container:v101
         environment:
           SSH_AUTHORIZED_KEY: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDA6tNSgBkWjnwnYuZUQB0oRGrv/IYlzyvUQRhm8eabgbhWaeGNarohkWXJgWw8s9BeAQm5z9wyHZ0vkdAIEtIJZLT1LTKFr8o9P4fzZUDVuGdRTA253q65lREb3yG9WjEEkCfIczzHwr+Pce68DRl9ZfMSeSYtweHDrjy98FW7yyJL3fkx0exVa6B1gKc6NAi4tZFyqH0sgOS1axXjusoUeXw9ouF1XBprDL0V762APpO+7YpuMTODLLcWHDQhR9dhjnncCaB2HZ+ptOCMtqKRFkBkfUjjHLboEyCGjjCZonEbqb7DdlZbRc0HhdBJM/Cd//nHOzon7w8HjH+YI9OB circleci@71f021696457"
     steps:

@@ -18,6 +18,9 @@ if [[ ! -z "${ssh_key}" ]];then
     ssh-keygen -l -f ${tmp_file}
 
     mv ${tmp_file}  ${ssh_dir}/authorized_keys
+
+    # Change owner
+    chown ops ${ssh_dir}/authorized_keys
 fi
 
 echo "Starting SSH daemon"

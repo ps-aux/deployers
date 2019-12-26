@@ -1,5 +1,6 @@
 FROM ubuntu:18.04
-RUN apt-get update && \
+RUN  apt-get update && \
+    apt install vim --assume-yes && \
     apt install docker.io  --assume-yes && \
     apt install openssh-server  --assume-yes && \
     # Won't start without
