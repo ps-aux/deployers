@@ -23,7 +23,11 @@ jobs:
             - ./node_modules
       - run:
           name: Prepare e2e SSH tests
-          command: echo ${SSH_AUTHORIZED_KEY} > ~/.ssh/id_rsa.pub
+          command: |
+            # Authorized key
+            echo ${SSH_AUTHORIZED_KEY} > ~/.ssh/id_rsa.pub
+            # Config
+            cp test/setup/ssh.config ~/.ssh/config
       - run:
           name: Test
           command: |
