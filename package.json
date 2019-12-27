@@ -8,6 +8,7 @@
     "build": "rm -rf build && babel --extensions '.ts,.js' src -d lib src",
     "pub": "npm publish --access public",
     "test": "jest",
+    "test:ci": "TEST_SSH_PORT=22 jest --testPathPattern='^((?!local).)*$'",
     "typecheck": "tsc --noEmit",
     "format": "prettier \"**/*.{js,ts,tsx}\" --write",
     "lint": "eslint '**/*.{js,ts,tsx}' --fix",
@@ -49,7 +50,6 @@
     "lint-staged": "^9.5.0",
     "npm-check-updates": "^3.2.2",
     "prettier": "^1.19.1",
-    "ts-jest": "^24.2.0",
     "typescript": "^3.7.3",
     "@types/ramda": "^0.26.38"
   },

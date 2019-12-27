@@ -35,8 +35,7 @@ jobs:
               echo "pass" | gpg --import --no-tty --batch --yes  gpg-key.asc
       - run:
           name: Test
-          command: |
-            npm test
+          command: npm run test:ci
       - run:
           name: Lint
           command: |

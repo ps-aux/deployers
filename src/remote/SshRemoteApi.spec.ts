@@ -4,9 +4,11 @@ import { createSshApi } from 'src/remote/SshRemoteApi'
  * For now require the Docker container to run
  */
 describe('manual integration tests', () => {
+    const envPort = process.env.TEST_SSH_PORT || '20022'
+
     const sshOpts = {
         host: 'localhost',
-        port: 22,
+        port: parseInt(envPort, 10),
         user: 'ops'
     }
 

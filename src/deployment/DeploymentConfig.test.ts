@@ -8,7 +8,7 @@ it('readDeploymentConfig', () => {
 
     expect(conf).toMatchObject({
         info: { name: 'foo' },
-        dir,
+        srcDir: dir,
         envFilePath: dir + '/.env',
         composeFilePath: dir + '/docker-compose.yml'
     })
