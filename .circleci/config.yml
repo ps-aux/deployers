@@ -31,7 +31,8 @@ jobs:
       - run:
           name: Prepare sops tests
           command: |
-              echo "pass" | gpg --import gpg-key.asc
+              # https://discuss.circleci.com/t/error-sending-to-agent-inappropriate-ioctl-for-device/17465
+              echo "pass" | gpg --import --no-tty --batch --yes  gpg-key.asc
       - run:
           name: Test
           command: |
