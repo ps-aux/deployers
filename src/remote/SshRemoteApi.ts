@@ -17,7 +17,7 @@ const sshCmd = (
     opts: SshOpts,
     returnStdout: boolean,
     stdIn?: string,
-    log?: (...any) => void
+    log?: Logger
 ): string | null => {
     cmd = cmd.replace(/'/g, "\\'")
     const args = connectionArg(opts)
