@@ -1,0 +1,8 @@
+version: '3.3'
+services:
+  mariadb:
+    image: "{{ version }}"
+    ports:
+      - "3307:3306"
+    environment:
+        FOO: {{ bar }}
