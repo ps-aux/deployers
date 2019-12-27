@@ -6,6 +6,8 @@ import { deployConfig } from 'src/deployment/cmds/deployConfig'
 
 const execCtx = createExecutionContext()
 
+// 'argv' at the end is required
+// eslint-disable-next-line no-unused-expressions
 Yargs.scriptName('deploy')
     .usage('$0 <cmd> [args]')
     .command('vps', 'VPS based deployment', y => {
@@ -55,4 +57,4 @@ Yargs.scriptName('deploy')
     // https://github.com/yargs/yargs/issues/895#issuecomment-392893305
     .demandCommand()
     .recommendCommands()
-    .strict()
+    .strict().argv
