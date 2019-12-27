@@ -1,0 +1,7 @@
+version: "3"
+services:
+  app1:
+    image: brndnmtthws/nginx-echo-headers
+    ports:
+      - "8081:8080"
+      - "8090:8080"
