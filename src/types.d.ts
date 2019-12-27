@@ -6,10 +6,10 @@ import { CopyTextFileOpts } from 'src/remote'
 
 export type LocalPath = string
 
-export type Logger = (...args) => void
+export type Logger = (...args: any) => void
 
-export type Deployer = {
-    deployApp: () => void
+export interface Deployer {
+    deployApp: (version: string) => void
     deployConfig: () => void
 }
 
@@ -29,6 +29,8 @@ export type RemoteApi = {
         returnStdOut?: boolean
     ) => string | null
 }
+
+export type DoTemplate = (templateContent: string, data: any) => string
 
 export type SshOpts = {
     host: string
