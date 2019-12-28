@@ -9,3 +9,15 @@ export const deployConfig = (
     const dep = createDeployer(opts.dir, { host: opts.host }, ctx.log())
     dep.deployConfig()
 }
+
+export const deployConfigFromEnv = (env: string, ctx: ExecutionContext) => {
+    const cfg = ctx.envConfig(env)
+
+    return deployConfig(
+        {
+            host: cfg.target,
+            dir: cfg.dir
+        },
+        ctx
+    )
+}

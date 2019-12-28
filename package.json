@@ -1,6 +1,6 @@
 {
   "name": "@ps-aux/deployers",
-  "version": "0.0.2-rc",
+  "version": "0.1.0",
   "description": "",
   "module": "lib/index.js",
   "main": "lib/index.js",
@@ -33,6 +33,7 @@
     "@babel/preset-env": "^7.7.6",
     "@babel/preset-typescript": "^7.7.4",
     "@types/jest": "^24.0.23",
+    "@types/ramda": "^0.26.38",
     "@typescript-eslint/eslint-plugin": "^2.11.0",
     "@typescript-eslint/parser": "^2.11.0",
     "babel-eslint": "^10.0.3",
@@ -50,8 +51,7 @@
     "lint-staged": "^9.5.0",
     "npm-check-updates": "^3.2.2",
     "prettier": "^1.19.1",
-    "typescript": "^3.7.3",
-    "@types/ramda": "^0.26.38"
+    "typescript": "^3.7.3"
   },
   "husky": {
     "hooks": {
@@ -66,6 +66,8 @@
     ]
   },
   "dependencies": {
+    "@hapi/joi": "^16.1.8",
+    "@types/hapi__joi": "^16.0.5",
     "handlebars": "^4.5.3",
     "js-yaml": "^3.13.1",
     "ramda": "^0.26.1",

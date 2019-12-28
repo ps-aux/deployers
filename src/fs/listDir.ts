@@ -1,6 +1,7 @@
 import fs from 'fs'
 import Path from 'path'
 import { DirFileItem } from 'src/fs/types'
+import { ensureValidDir } from 'src/fs/isValidDir'
 
 const handleError = (msg: string) => {
     throw new Error(msg)
@@ -12,7 +13,7 @@ export const listDir = (
 ): DirFileItem[] => {
     if (!dirPath.startsWith('/')) throw new Error('Dir path must be absolute')
 
-    if (!fs.existsSync(dirPath)) handleError(`Path '${dirPath}' does not exist`)
+    ensureValidDir(dirPath)
 
     if (!fs.lstatSync(dirPath).isDirectory())
         handleError(`'${dirPath} is not a dir`)
