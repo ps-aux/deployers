@@ -33,7 +33,7 @@ module.exports = {
             files: [
                 '*.test.js',
                 '*.spec.js',
-                '*.test.ts',
+                '*.test.*ts',
                 '*.spec.*ts',
                 'src/test/**'
             ],
