@@ -8,8 +8,12 @@ export type LocalPath = string
 
 export type Logger = (...args: any) => void
 
+export type DeployAppOpts = {
+    copyFromRepo?: string
+}
+
 export interface Deployer {
-    deployApp: (version: string) => void
+    deployApp: (version: string, opts?: DeployAppOpts) => void
     deployConfig: () => void
 }
 

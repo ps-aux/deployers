@@ -5,8 +5,11 @@ import { ExecutionContext } from 'src/cli/ExecutionContext'
 export const deployApp = (
     version: string,
     opts: DeploymentCmdOpts,
-    ctx: ExecutionContext
+    ctx: ExecutionContext,
+    copyFromRepo?: string
 ) => {
     const dep = createDeployer(opts.dir, { host: opts.host }, ctx.log())
-    dep.deployApp(version)
+    dep.deployApp(version, {
+        copyFromRepo
+    })
 }

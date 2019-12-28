@@ -67,6 +67,7 @@
   },
   "dependencies": {
     "handlebars": "^4.5.3",
+    "js-yaml": "^3.13.1",
     "ramda": "^0.26.1",
     "yargs": "^15.0.2"
   }

@@ -34,7 +34,7 @@ module.exports = {
                 '*.test.js',
                 '*.spec.js',
                 '*.test.ts',
-                '*.spec.ts',
+                '*.spec.*ts',
                 'src/test/**'
             ],
             globals: {

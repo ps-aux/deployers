@@ -19,6 +19,12 @@ Yargs.scriptName('deploy')
                     type: 'string',
                     description: 'Version of app to be deployed'
                 })
+
+                y.option({
+                    copyFromRepo: {
+                        type: 'string'
+                    }
+                })
             },
             args => {
                 deployApp(
@@ -27,7 +33,8 @@ Yargs.scriptName('deploy')
                         dir: absPath(args.dir as string),
                         host: args.host as string
                     },
-                    execCtx
+                    execCtx,
+                    args.copyFromRepo as string
                 )
             }
         )

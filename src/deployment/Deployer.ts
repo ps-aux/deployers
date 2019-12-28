@@ -1,4 +1,5 @@
 import {
+    DeployAppOpts,
     Deployer,
     DoTemplate,
     LocalPath,
@@ -12,10 +13,11 @@ import {
     readDeploymentConfig
 } from 'src/deployment/DeploymentConfig'
 import { readFile } from 'src/fs/readFile'
-import { ensureValidComposeFile } from 'src/deployment/fileValidations'
 import { template } from 'src/templating/engine/template'
 import { isSopsEncryptedFile } from 'src/encryption/isSopsEncryptedFile'
 import { readSopsFile } from 'src/encryption/readSopsFile'
+import { parseComposeFile } from 'src/deployment/parseComposeFile'
+import { copyBetweenRepos } from 'src/docker/copyBetweenRepos'
 
 type FsDeployerOpts = {
     log?: Logger
@@ -45,14 +47,23 @@ class FsDeployer implements Deployer {
         this.deploymentLogInfo = this.cfg.info.name
     }
 
-    deployApp = (version: string) => {
+    deployApp = (version: string, opts: DeployAppOpts = {}) => {
         this.log(
             `Deploying app. Deployment='${this.cfg.info.name}', Compose file=${this.cfg.composeFilePath}`
         )
 
         let content = readFile(this.cfg.composeFilePath)
 
-        ensureValidComposeFile(content)
+        const { imageName } = parseComposeFile(content)
+        this.log(`Image=${imageName}, version=${version}`)
+
+        if (opts.copyFromRepo) {
+            this.copyDockerImageBetweenRepo(
+                opts.copyFromRepo,
+                imageName,
+                version
+            )
+        }
 
         content = this.template(content, {
             version
@@ -61,6 +72,15 @@ class FsDeployer implements Deployer {
 
         this.composeUp()
         this.log('New version of app deployed. Check if it is running properly')
+    }
+
+    private copyDockerImageBetweenRepo(
+        src: string,
+        dst: string,
+        version: string
+    ) {
+        this.log(`Will copy image '${dst}' from '${src}'`)
+        copyBetweenRepos(src, dst, version)
     }
 
     deployConfig = (restartApp?: boolean) => {
