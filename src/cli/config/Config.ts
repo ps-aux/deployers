@@ -3,7 +3,8 @@ import { ensureValidDir } from 'src/fs/isValidDir'
 import Path from 'path'
 
 export type Ssh = {
-    user: string
+    user?: string
+    port?: number
 }
 
 export const DeploymentType = {
@@ -26,7 +27,8 @@ export type Config = {
 
 const SshSchema = () =>
     Joi.object({
-        user: Joi.string().optional()
+        user: Joi.string().optional(),
+        port: Joi.number().optional()
     })
 
 const EnvConfigSchema = () =>

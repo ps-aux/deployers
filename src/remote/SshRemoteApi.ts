@@ -22,7 +22,7 @@ const sshCmd = (
     cmd = cmd.replace(/'/g, "\\'")
     const args = connectionArg(opts)
 
-    let fullCmd = `ssh ${args} '${cmd}'`
+    let fullCmd = `ssh -o ConnectTimeout=10 ${args} '${cmd}'`
 
     if (stdIn) {
         fullCmd = `echo '${stdIn}' | ` + fullCmd
@@ -90,7 +90,7 @@ class SshApi implements RemoteApi {
         cmds.add(`cat > ${path}`)
 
         const cmd = cmds.cmd()
-        sshCmd(cmd, this.opts, false, content || '\n')
+        sshCmd(cmd, this.opts, false, content || '\n', this.log)
     }
 
     ensureDir = (path: LocalPath) => {
@@ -117,7 +117,8 @@ class SshApi implements RemoteApi {
     }
 
     private ensureNotRoot = () => {
-        const userName = sshCmd('whoami', this.opts, true)
+        this.log('Ensuring SSH user is not root')
+        const userName = sshCmd('whoami', this.opts, true, undefined, this.log)
         if (userName === 'root')
             throw new Error('SSH user is root. This is now allowed.')
     }

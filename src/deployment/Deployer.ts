@@ -123,7 +123,8 @@ export const createDeployer = (
     log?: Logger
 ): Deployer => {
     const remoteApi = createSshApi({
-        ssh: sshOpts
+        ssh: sshOpts,
+        log
     })
     return new FsDeployer(srcDir, remoteApi, template, {
         log
