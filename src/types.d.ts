@@ -17,6 +17,10 @@ export interface Deployer {
     deployConfig: () => void
 }
 
+export interface VersionDetector {
+    getVersion: () => Promise<string>
+}
+
 export type RemoteApi = {
     copyTextFile: (
         dir: LocalPath,

@@ -1,5 +1,8 @@
 import { Argv, CommandModule } from 'yargs'
-import { deployAppFromEnv } from 'src/deployment/cmds/deployApp'
+import {
+    deployEnvApp,
+    deployEnvAppBasedOnEnv
+} from 'src/deployment/cmds/deployApp'
 import { deployConfigFromEnv } from 'src/deployment/cmds/deployConfig'
 import { ExecutionContext } from 'src/cli/ExecutionContext'
 
@@ -18,9 +21,27 @@ const envCmd = (execCtx: ExecutionContext): CommandModule => ({
                     })
                 },
                 args => {
-                    deployAppFromEnv(
+                    deployEnvApp(
                         args.env as string,
                         args.appVersion as string,
+                        execCtx
+                    )
+                }
+            )
+            .command(
+                'app:from <from-env>',
+                'Deploys a version of application based on a current version at the given env',
+                y => {
+                    y.positional('from-env', {
+                        type: 'string',
+                        description:
+                            'Env from which to the detect current version'
+                    })
+                },
+                args => {
+                    deployEnvAppBasedOnEnv(
+                        args.env as string,
+                        args.fromEnv as string,
                         execCtx
                     )
                 }

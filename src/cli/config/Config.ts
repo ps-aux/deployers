@@ -1,15 +1,29 @@
 import Joi from '@hapi/joi'
 import { ensureValidDir } from 'src/fs/isValidDir'
 import Path from 'path'
+import { AxiosInstance } from 'axios'
 
 export type Ssh = {
     user?: string
     port?: number
 }
 
+export const VersionProviderType = {
+    URL: 'url',
+    FUNCTION: 'function',
+    all: ['url', 'function']
+}
+
+export type FunctionVersionProvider = (axios: AxiosInstance) => Promise<string>
+
+export type VersionProvider = {
+    type: 'url' | 'function'
+    value: string | FunctionVersionProvider
+}
+
 export const DeploymentType = {
     VPS: 'vps',
-    K8s: 'k8s',
+    K8S: 'k8s',
     all: ['vps', 'k8s']
 }
 
@@ -19,11 +33,22 @@ export type EnvConfig = {
     dir: string
     ssh?: Ssh
     copyFromRepo?: string
+    versionProvider?: VersionProvider
 }
 
 export type Config = {
     envs: { [key: string]: EnvConfig }
+    versionProviders: { [key: string]: VersionProvider }
 }
+
+const VersionProviderSchema = () =>
+    Joi.object({
+        type: Joi.string().equal(
+            VersionProviderType.URL,
+            VersionProviderType.FUNCTION
+        ),
+        value: [Joi.string(), Joi.function()]
+    })
 
 const SshSchema = () =>
     Joi.object({
@@ -37,12 +62,16 @@ const EnvConfigSchema = () =>
         target: Joi.string(),
         dir: Joi.string(),
         ssh: SshSchema().optional(),
-        copyFromRepo: Joi.string().optional()
+        copyFromRepo: Joi.string().optional(),
+        versionProvider: VersionProviderSchema().optional()
     })
 
 const ConfSchema = () =>
     Joi.object({
-        envs: Joi.object().pattern(Joi.string(), EnvConfigSchema())
+        envs: Joi.object().pattern(Joi.string(), EnvConfigSchema()),
+        versionProviders: Joi.object()
+            .pattern(Joi.string(), VersionProviderSchema())
+            .optional()
     })
 
 export const processConfig = (maybeCfg: object, rootDir: string): Config => {
