@@ -2,12 +2,22 @@ import { VersionDetector } from 'src'
 import Axios from 'axios'
 import { appError } from 'src/error/AppError'
 
+const versionPropNames = ['version', 'VERSION']
+
 export const createUrlVersionDetector = (url: string): VersionDetector => {
     const http = Axios.create()
     const getVersion = async () => {
         const res = await http.get(url).then(r => r.data)
 
-        let version = res.version
+        let version: string | null = null
+
+        for (const propName of versionPropNames) {
+            const val = res[propName]
+            if (val) {
+                version = val
+                break
+            }
+        }
 
         if (!version) {
             throw appError(

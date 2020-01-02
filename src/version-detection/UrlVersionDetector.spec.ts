@@ -5,13 +5,25 @@ import { createUrlVersionDetector } from 'src/version-detection/UrlVersionDetect
 it('works', async () => {
     const url = 'http://info'
 
+    // 'version' prop name
     mockAxios(url, 'get', {
         version: '123'
     })
 
-    const sut = createUrlVersionDetector(url)
+    let sut = createUrlVersionDetector(url)
 
-    const ver = await sut.getVersion()
+    let ver = await sut.getVersion()
 
     expect(ver).toBe('123')
+
+    mockAxios(url, 'get', {
+        VERSION: '456'
+    })
+
+    // 'VERSION' prop name
+    sut = createUrlVersionDetector(url)
+
+    ver = await sut.getVersion()
+
+    expect(ver).toBe('456')
 })
