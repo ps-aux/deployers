@@ -12,6 +12,7 @@ Passphrase to the dev key is `pass`. Fingerprint if `895EA94211D99463FCDEF2753E0
 ## TODO
 
 ### Features
+- enforce log rotation settings in the Docker Compose file
 - flag for app restart after config deployment
 - improved logging (with professional logger lib)
 - user friendly and clean error handling
