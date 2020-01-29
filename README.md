@@ -11,6 +11,8 @@ Passphrase to the dev key is `pass`. Fingerprint if `895EA94211D99463FCDEF2753E0
 
 ## TODO
 
+- If run as npm script from Intellij idea there is program with Docker login via GCP.
+
 ### Features
 - enforce log rotation settings in the Docker Compose file
 - flag for app restart after config deployment
