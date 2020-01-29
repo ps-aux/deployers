@@ -23,7 +23,7 @@ export const deployEnvApp = (
 ) => {
     const cfg = ctx.envConfig(env)
 
-    return deployApp(version, toDeploymentCmdOpts(cfg), ctx)
+    return deployApp(version, toDeploymentCmdOpts(cfg), ctx, cfg.copyFromRepo)
 }
 
 export const deployEnvAppBasedOnEnv = async (
