@@ -1,7 +1,7 @@
-import { createDeployer } from 'src/deployment/Deployer'
+import { createDockerDeployer } from 'src/deployment/vps/DockerDeployer'
 import { ExecutionContext } from 'src/cli/ExecutionContext'
-import { DeploymentCmdOpts } from 'src/deployment/types'
-import { toDeploymentCmdOpts, toSshOpts } from 'src/deployment/cmds/opts'
+import { DeploymentCmdOpts } from 'src/deployment/vps/types'
+import { toDeploymentCmdOpts, toSshOpts } from 'src/deployment/vps/cmds/opts'
 import { createConfigVersionDetector } from 'src/version-detection/ConfigVersionDetector'
 
 export const deployApp = (
@@ -10,7 +10,7 @@ export const deployApp = (
     ctx: ExecutionContext,
     copyFromRepo?: string
 ) => {
-    const dep = createDeployer(opts.dir, toSshOpts(opts), ctx.log())
+    const dep = createDockerDeployer(opts.dir, toSshOpts(opts), ctx.log())
     dep.deployApp(version, {
         copyFromRepo
     })

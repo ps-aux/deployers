@@ -6,17 +6,17 @@ import {
     Logger,
     RemoteApi,
     SshOpts
-} from 'src/types'
+} from 'src'
 import { createSshApi } from 'src/remote/SshRemoteApi'
 import {
     DeploymentConfig,
     readDeploymentConfig
-} from 'src/deployment/DeploymentConfig'
+} from 'src/deployment/vps/DockerDeploymentConfig'
 import { readFile } from 'src/fs/readFile'
 import { template } from 'src/templating/engine/template'
 import { isSopsEncryptedFile } from 'src/encryption/isSopsEncryptedFile'
 import { readSopsFile } from 'src/encryption/readSopsFile'
-import { parseComposeFile } from 'src/deployment/parseComposeFile'
+import { parseComposeFile } from 'src/deployment/vps/parseComposeFile'
 import { copyBetweenRepos } from 'src/docker/copyBetweenRepos'
 
 type FsDeployerOpts = {
@@ -25,7 +25,7 @@ type FsDeployerOpts = {
 
 const deploymentsRoot = 'deployments'
 
-class FsDeployer implements Deployer {
+class DockerDeployer implements Deployer {
     readonly cfg: DeploymentConfig
     readonly remote: RemoteApi
     readonly remoteDir: string
@@ -117,7 +117,7 @@ class FsDeployer implements Deployer {
     }
 }
 
-export const createDeployer = (
+export const createDockerDeployer = (
     srcDir: string,
     sshOpts: SshOpts,
     log?: Logger
@@ -126,7 +126,7 @@ export const createDeployer = (
         ssh: sshOpts,
         log
     })
-    return new FsDeployer(srcDir, remoteApi, template, {
+    return new DockerDeployer(srcDir, remoteApi, template, {
         log
     })
 }

@@ -2,8 +2,8 @@ import { Argv, CommandModule } from 'yargs'
 import {
     deployEnvApp,
     deployEnvAppBasedOnEnv
-} from 'src/deployment/cmds/deployApp'
-import { deployConfigFromEnv } from 'src/deployment/cmds/deployConfig'
+} from 'src/deployment/vps/cmds/deployApp'
+import { deployConfigFromEnv } from 'src/deployment/vps/cmds/deployConfig'
 import { ExecutionContext } from 'src/cli/ExecutionContext'
 
 const envCmd = (execCtx: ExecutionContext): CommandModule => ({

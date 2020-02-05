@@ -1,9 +1,9 @@
 import { Argv, CommandModule } from 'yargs'
-import { deployApp } from 'src/deployment/cmds/deployApp'
+import { deployApp } from 'src/deployment/vps/cmds/deployApp'
 import { absPath } from 'src/cli/pathResolver'
-import { deployConfig } from 'src/deployment/cmds/deployConfig'
+import { deployConfig } from 'src/deployment/vps/cmds/deployConfig'
 import { ExecutionContext } from 'src/cli/ExecutionContext'
-import { DeploymentCmdOpts } from 'src/deployment/types'
+import { DeploymentCmdOpts } from 'src/deployment/vps/types'
 
 const extractArgs = (args: any): DeploymentCmdOpts => {
     const res = {

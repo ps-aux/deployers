@@ -11,6 +11,7 @@
     "test:ci": "TEST_SSH_PORT=22 jest --testPathPattern='^((?!local).)*$'",
     "typecheck": "tsc --noEmit",
     "format": "prettier \"**/*.{js,ts,tsx}\" --write",
+    "build-n-run": "npm run build && ",
     "lint": "eslint '**/*.{js,ts,tsx}' --fix",
     "update-deps": "ncu --upgrade"
   },

@@ -1,4 +1,4 @@
-import { createDeployer } from 'src/deployment/Deployer'
+import { createDockerDeployer } from 'src/deployment/vps/DockerDeployer'
 import { testDataDir } from 'src/_test'
 
 const opts = {
@@ -9,13 +9,13 @@ const opts = {
 const dir = testDataDir('deployment/DeploymentConfig/encrypted')
 
 it('deploy config ', () => {
-    const dep = createDeployer(dir, opts)
+    const dep = createDockerDeployer(dir, opts)
 
     dep.deployConfig()
 })
 
 it('deploy app ', () => {
-    const dep = createDeployer(dir, opts)
+    const dep = createDockerDeployer(dir, opts)
 
     dep.deployApp('purple')
 })

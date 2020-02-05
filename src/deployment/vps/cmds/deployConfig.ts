@@ -1,13 +1,13 @@
-import { DeploymentCmdOpts } from 'src/deployment/types'
-import { createDeployer } from 'src/deployment/Deployer'
+import { DeploymentCmdOpts } from 'src/deployment/vps/types'
+import { createDockerDeployer } from 'src/deployment/vps/DockerDeployer'
 import { ExecutionContext } from 'src/cli/ExecutionContext'
-import { toDeploymentCmdOpts, toSshOpts } from 'src/deployment/cmds/opts'
+import { toDeploymentCmdOpts, toSshOpts } from 'src/deployment/vps/cmds/opts'
 
 export const deployConfig = (
     opts: DeploymentCmdOpts,
     ctx: ExecutionContext
 ) => {
-    const dep = createDeployer(opts.dir, toSshOpts(opts), ctx.log())
+    const dep = createDockerDeployer(opts.dir, toSshOpts(opts), ctx.log())
     dep.deployConfig()
 }
 
