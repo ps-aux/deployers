@@ -102,7 +102,7 @@ class DockerDeployer implements Deployer {
         this.deployFile('.env', content)
 
         if (restartApp) {
-            this.log('Reloading app service')
+            this.log('Restarting app service')
             this.compose.restart()
         }
         this.log('Config deployed')
