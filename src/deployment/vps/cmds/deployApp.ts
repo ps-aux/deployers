@@ -1,26 +1,21 @@
-import { createDeployer } from 'src/deployment/Deployer'
-import { ExecutionContext } from 'src/cli/ExecutionContext'
-import { DeploymentCmdOpts } from 'src/deployment/types'
-import { toDeploymentCmdOpts, toSshOpts } from 'src/deployment/cmds/opts'
+import { Context } from 'src/cli/Context'
+import { DeploymentCmdOpts } from 'src/deployment/vps/types'
+import { toDeploymentCmdOpts, toSshOpts } from 'src/deployment/vps/cmds/opts'
 import { createConfigVersionDetector } from 'src/version-detection/ConfigVersionDetector'
 
 export const deployApp = (
     version: string,
     opts: DeploymentCmdOpts,
-    ctx: ExecutionContext,
+    ctx: Context,
     copyFromRepo?: string
 ) => {
-    const dep = createDeployer(opts.dir, toSshOpts(opts), ctx.log())
+    const dep = ctx.createDockerDeployer(opts.dir, toSshOpts(opts))
     dep.deployApp(version, {
         copyFromRepo
     })
 }
 
-export const deployEnvApp = (
-    env: string,
-    version: string,
-    ctx: ExecutionContext
-) => {
+export const deployEnvApp = (env: string, version: string, ctx: Context) => {
     const cfg = ctx.envConfig(env)
 
     return deployApp(version, toDeploymentCmdOpts(cfg), ctx, cfg.copyFromRepo)
@@ -29,7 +24,7 @@ export const deployEnvApp = (
 export const deployEnvAppBasedOnEnv = async (
     env: string,
     versionFromEnv: string,
-    ctx: ExecutionContext
+    ctx: Context
 ) => {
     const cfg = ctx.config()
 

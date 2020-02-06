@@ -1,19 +1,18 @@
 import Yargs from 'yargs'
-import { createExecutionContext } from 'src/cli/ExecutionContext'
+import { Context } from 'src/cli/Context'
 import vpsCmd from 'src/cli/commands/vps'
 import envCmd from 'src/cli/commands/env'
 
-const execCtx = createExecutionContext()
+const entrypoint = (ctx: Context) =>
+    Yargs.scriptName('deploy')
+        .usage('$0 <cmd> [args]')
+        .command(vpsCmd(ctx))
+        .command(envCmd(ctx))
+        .alias('h', 'help')
+        .help()
+        // https://github.com/yargs/yargs/issues/895#issuecomment-392893305
+        .demandCommand()
+        .recommendCommands()
+        .strict()
 
-// 'argv' at the end is required
-// eslint-disable-next-line no-unused-expressions
-Yargs.scriptName('deploy')
-    .usage('$0 <cmd> [args]')
-    .command(vpsCmd(execCtx))
-    .command(envCmd(execCtx))
-    .alias('h', 'help')
-    .help()
-    // https://github.com/yargs/yargs/issues/895#issuecomment-392893305
-    .demandCommand()
-    .recommendCommands()
-    .strict().argv
+export default entrypoint

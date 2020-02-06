@@ -1,5 +1,5 @@
-import { SshOpts } from 'src'
-import { DeploymentCmdOpts } from 'src/deployment/types'
+import { SshOpts } from 'src/types'
+import { DeploymentCmdOpts } from 'src/deployment/vps/types'
 import { EnvConfig } from 'src/cli/config/Config'
 
 export const toSshOpts = (opts: DeploymentCmdOpts): SshOpts => ({

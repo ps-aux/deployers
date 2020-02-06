@@ -6,9 +6,15 @@ it('works', async () => {
     const url = 'http://info'
 
     // 'version' prop name
-    mockAxios(url, 'get', {
-        version: '123'
-    })
+    mockAxios([
+        {
+            url,
+            method: 'get',
+            response: {
+                version: '123'
+            }
+        }
+    ])
 
     let sut = createUrlVersionDetector(url)
 
@@ -16,9 +22,15 @@ it('works', async () => {
 
     expect(ver).toBe('123')
 
-    mockAxios(url, 'get', {
-        VERSION: '456'
-    })
+    mockAxios([
+        {
+            url,
+            method: 'get',
+            response: {
+                VERSION: '456'
+            }
+        }
+    ])
 
     // 'VERSION' prop name
     sut = createUrlVersionDetector(url)

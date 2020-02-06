@@ -1,16 +1,29 @@
 import { mockAxios } from 'src/_test/mock/mockAxios'
+
 import { createConfigVersionDetector } from 'src/version-detection/ConfigVersionDetector'
 
 // @ts-ignore
 import cfgFile from '../../deployers.config'
 import { Config } from 'src/cli/config/Config'
+// Must be at the beginning
+mockAxios([
+    {
+        method: 'get',
+        url: 'http://version',
+        response: {
+            version: 'test-123'
+        }
+    },
+    {
+        method: 'get',
+        url: 'https://api.moja.firmaren.garwan.io/',
+        response: {
+            version: 'test-123'
+        }
+    }
+])
 
 it('works', async () => {
-    // Must be at the beginning
-    mockAxios('http://version', 'get', {
-        version: 'test-123'
-    })
-
     const cfg = cfgFile as Config
 
     const foo = createConfigVersionDetector(cfg, 'foo')

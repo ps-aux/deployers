@@ -4,20 +4,18 @@ import {
     DoTemplate,
     LocalPath,
     Logger,
-    RemoteApi,
-    SshOpts
-} from 'src/types'
-import { createSshApi } from 'src/remote/SshRemoteApi'
+    RemoteApi
+} from 'src'
 import {
     DeploymentConfig,
     readDeploymentConfig
-} from 'src/deployment/DeploymentConfig'
+} from 'src/deployment/vps/DockerDeploymentConfig'
 import { readFile } from 'src/fs/readFile'
-import { template } from 'src/templating/engine/template'
 import { isSopsEncryptedFile } from 'src/encryption/isSopsEncryptedFile'
 import { readSopsFile } from 'src/encryption/readSopsFile'
-import { parseComposeFile } from 'src/deployment/parseComposeFile'
+import { parseComposeFile } from 'src/deployment/vps/parseComposeFile'
 import { copyBetweenRepos } from 'src/docker/copyBetweenRepos'
+import { DockerCompose, DockerComposeApi } from 'src/docker/DockerCompose'
 
 type FsDeployerOpts = {
     log?: Logger
@@ -25,13 +23,14 @@ type FsDeployerOpts = {
 
 const deploymentsRoot = 'deployments'
 
-class FsDeployer implements Deployer {
+class DockerDeployer implements Deployer {
     readonly cfg: DeploymentConfig
     readonly remote: RemoteApi
     readonly remoteDir: string
     readonly log: Logger
     readonly template: DoTemplate
     readonly deploymentLogInfo: string
+    readonly compose: DockerComposeApi
 
     constructor(
         dir: string,
@@ -45,6 +44,10 @@ class FsDeployer implements Deployer {
         this.log = opts.log || (() => undefined)
         this.template = template
         this.deploymentLogInfo = this.cfg.info.name
+
+        this.compose = new DockerCompose(cmd =>
+            this.remote.execRemoteCmd(this.remoteDir, cmd)
+        )
     }
 
     deployApp = (version: string, opts: DeployAppOpts = {}) => {
@@ -70,7 +73,7 @@ class FsDeployer implements Deployer {
         })
         this.deployFile('docker-compose.yml', content)
 
-        this.composeUp()
+        this.compose.start()
         this.log('New version of app deployed. Check if it is running properly')
     }
 
@@ -100,13 +103,9 @@ class FsDeployer implements Deployer {
 
         if (restartApp) {
             this.log('Reloading app service')
-            this.composeUp()
+            this.compose.restart()
         }
         this.log('Config deployed')
-    }
-
-    private composeUp = () => {
-        this.remote.execRemoteCmd(this.remoteDir, 'docker-compose up -d')
     }
 
     private deployFile = (path: LocalPath, content: string) => {
@@ -117,16 +116,4 @@ class FsDeployer implements Deployer {
     }
 }
 
-export const createDeployer = (
-    srcDir: string,
-    sshOpts: SshOpts,
-    log?: Logger
-): Deployer => {
-    const remoteApi = createSshApi({
-        ssh: sshOpts,
-        log
-    })
-    return new FsDeployer(srcDir, remoteApi, template, {
-        log
-    })
-}
+export default DockerDeployer

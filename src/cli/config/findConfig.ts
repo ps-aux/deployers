@@ -4,7 +4,6 @@ import { existsSync } from 'fs'
 import { Config, processConfig } from 'src/cli/config/Config'
 
 const getRootDir = (): string => {
-    // console.log(require.main.filename)
     const npmDir = findFirstNpmDir(require!.main!.filename)
 
     if (npmDir) return npmDir
