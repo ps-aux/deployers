@@ -14,7 +14,7 @@ export type DeployAppOpts = {
 
 export interface Deployer {
     deployApp: (version: string, opts?: DeployAppOpts) => void
-    deployConfig: () => void
+    deployConfig: (restart: boolean) => void
 }
 
 export interface VersionDetector {

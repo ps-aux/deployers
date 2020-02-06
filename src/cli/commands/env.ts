@@ -4,9 +4,9 @@ import {
     deployEnvAppBasedOnEnv
 } from 'src/deployment/vps/cmds/deployApp'
 import { deployConfigFromEnv } from 'src/deployment/vps/cmds/deployConfig'
-import { ExecutionContext } from 'src/cli/ExecutionContext'
+import { Context } from 'src/cli/Context'
 
-const envCmd = (execCtx: ExecutionContext): CommandModule => ({
+const envCmd = (execCtx: Context): CommandModule => ({
     command: 'env',
     describe: 'Deployment based on environment config',
     builder: (y: Argv) =>
@@ -47,12 +47,15 @@ const envCmd = (execCtx: ExecutionContext): CommandModule => ({
                 }
             )
             .command('config', 'Deploys application config', {}, args => {
-                deployConfigFromEnv(args.env as string, execCtx)
+                deployConfigFromEnv(args.env as string, execCtx, !!args.restart)
             })
             .options({
                 env: {
                     demandOption: true,
                     type: 'string'
+                },
+                restart: {
+                    type: 'boolean'
                 }
             })
             .demandCommand(),

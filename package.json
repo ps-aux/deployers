@@ -1,6 +1,6 @@
 {
   "name": "@ps-aux/deployers",
-  "version": "0.3.0-rc",
+  "version": "0.3.1-rc",
   "description": "",
   "module": "lib/index.js",
   "main": "lib/index.js",

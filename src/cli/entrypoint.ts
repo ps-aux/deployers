@@ -1,9 +1,9 @@
 import Yargs from 'yargs'
-import { ExecutionContext } from 'src/cli/ExecutionContext'
+import { Context } from 'src/cli/Context'
 import vpsCmd from 'src/cli/commands/vps'
 import envCmd from 'src/cli/commands/env'
 
-const entrypoint = (ctx: ExecutionContext) =>
+const entrypoint = (ctx: Context) =>
     Yargs.scriptName('deploy')
         .usage('$0 <cmd> [args]')
         .command(vpsCmd(ctx))

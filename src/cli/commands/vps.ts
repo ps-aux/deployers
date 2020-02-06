@@ -2,7 +2,7 @@ import { Argv, CommandModule } from 'yargs'
 import { deployApp } from 'src/deployment/vps/cmds/deployApp'
 import { absPath } from 'src/cli/pathResolver'
 import { deployConfig } from 'src/deployment/vps/cmds/deployConfig'
-import { ExecutionContext } from 'src/cli/ExecutionContext'
+import { Context } from 'src/cli/Context'
 import { DeploymentCmdOpts } from 'src/deployment/vps/types'
 
 const extractArgs = (args: any): DeploymentCmdOpts => {
@@ -20,7 +20,7 @@ const extractArgs = (args: any): DeploymentCmdOpts => {
     return res
 }
 
-const vpsCmd = (execCtx: ExecutionContext): CommandModule => ({
+const vpsCmd = (execCtx: Context): CommandModule => ({
     command: 'vps',
     describe: 'VPS based deployment',
     builder: (y: Argv) =>
@@ -50,7 +50,7 @@ const vpsCmd = (execCtx: ExecutionContext): CommandModule => ({
                 }
             )
             .command('config', 'Deploys application config', {}, args => {
-                deployConfig(extractArgs(args), execCtx)
+                deployConfig(extractArgs(args), execCtx, !!args.restart)
             })
             .options({
                 dir: {
@@ -66,6 +66,9 @@ const vpsCmd = (execCtx: ExecutionContext): CommandModule => ({
                 },
                 'ssh-port': {
                     type: 'number'
+                },
+                restart: {
+                    type: 'boolean'
                 }
             })
             .demandCommand(),

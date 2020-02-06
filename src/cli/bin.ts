@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import entrypoint from 'src/cli/entrypoint'
-import { createExecutionContext } from 'src/cli/ExecutionContext'
+import { createContext } from 'src/cli/Context'
 
 // eslint-disable-next-line no-unused-expressions
-entrypoint(createExecutionContext()).argv
+entrypoint(createContext()).argv
