@@ -1,4 +1,4 @@
-import { createSshApi } from 'src/remote/SshRemoteApi'
+import { createSshApi } from 'src/cmd/remote/SshRemoteApi'
 
 /**
  * For now require the Docker container to run

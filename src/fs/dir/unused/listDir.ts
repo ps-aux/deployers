@@ -1,7 +1,7 @@
 import fs from 'fs'
 import Path from 'path'
 import { DirFileItem } from 'src/fs/types'
-import { ensureValidDir } from 'src/fs/isValidDir'
+import { ensureValidDir } from 'src/fs/dir/isValidDir'
 
 const handleError = (msg: string) => {
     throw new Error(msg)

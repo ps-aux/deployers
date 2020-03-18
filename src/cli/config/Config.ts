@@ -1,5 +1,5 @@
 import Joi from '@hapi/joi'
-import { ensureValidDir } from 'src/fs/isValidDir'
+import { ensureValidDir } from 'src/fs/dir/isValidDir'
 import Path from 'path'
 import { AxiosInstance } from 'axios'
 

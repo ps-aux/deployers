@@ -4,7 +4,7 @@ import { processConfig } from 'src/cli/config/Config'
 import Path from 'path'
 
 // Dir must exist
-const dir = 'src/_test/deployment/DeploymentConfig/encrypted'
+const dir = 'src/_test/deployment/vps/DeploymentConfig/encrypted'
 
 const cfg = processConfig(
     {

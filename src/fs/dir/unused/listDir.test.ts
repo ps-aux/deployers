@@ -1,4 +1,4 @@
-import { listDir } from 'src/fs/listDir'
+import { listDir } from 'src/fs/dir/unused/listDir'
 import { DirFileItem } from 'src/fs/types'
 import { testDataDir } from 'src/_test'
 

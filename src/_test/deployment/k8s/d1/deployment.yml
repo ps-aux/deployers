@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  kuard-deployers-test
+  namespace: dev
+  labels:
+    name: kuard-deployers-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kuard-deployers-test
+  template:
+    metadata:
+      labels:
+        app: kuard-deployers-test
+    spec:
+      containers:
+        - name:  kuard-deployers-test
+          image: gcr.io/kuar-demo/kuard-amd64:{{ version }}
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: kuard-deployers-test

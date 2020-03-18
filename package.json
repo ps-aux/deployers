@@ -1,6 +1,6 @@
 {
   "name": "@ps-aux/deployers",
-  "version": "0.3.3",
+  "version": "0.4.0-rc",
   "description": "",
   "module": "lib/index.js",
   "main": "lib/index.js",
@@ -36,10 +36,10 @@
     "@babel/preset-typescript": "^7.8.3",
     "@types/jest": "^25.1.4",
     "@types/jest-when": "^2.7.0",
-    "@types/node": "^13.9.0",
-    "@types/ramda": "^0.26.43",
-    "@typescript-eslint/eslint-plugin": "^2.23.0",
-    "@typescript-eslint/parser": "^2.23.0",
+    "@types/node": "^13.9.1",
+    "@types/ramda": "^0.26.44",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.1.0",
     "babel-plugin-module-resolver": "^4.0.0",
@@ -71,12 +71,12 @@
     ]
   },
   "dependencies": {
-    "@hapi/joi": "^17.1.0",
+    "@hapi/joi": "^17.1.1",
     "@types/hapi__joi": "^16.0.12",
     "axios": "^0.19.2",
     "handlebars": "^4.7.3",
     "js-yaml": "^3.13.1",
     "ramda": "^0.27.0",
-    "yargs": "^15.3.0"
+    "yargs": "^15.3.1"
   }
 }

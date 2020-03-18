@@ -1,22 +1,22 @@
+import { ExecCmd } from 'src/cmd/typed'
+
 export type DockerComposeApi = {
     start: () => void
     restart: () => void
 }
 
-export type CmdExecutor = (cmd: string) => void
-
 export class DockerCompose implements DockerComposeApi {
-    private readonly cmdExecutor: CmdExecutor
+    private readonly exec: ExecCmd
 
-    constructor(cmdExecutor: CmdExecutor) {
-        this.cmdExecutor = cmdExecutor
+    constructor(exec: ExecCmd) {
+        this.exec = exec
     }
 
     restart = () => {
-        this.cmdExecutor('docker-compose up -d --force-recreate')
+        this.exec('docker-compose up -d --force-recreate')
     }
 
     start = () => {
-        this.cmdExecutor('docker-compose up -d')
+        this.exec('docker-compose up -d')
     }
 }
