@@ -2,7 +2,7 @@ import { testDataDir } from 'src/_test'
 import { readFile } from 'src/fs/readFile'
 import { parseComposeFile } from 'src/deployment/vps/parseComposeFile'
 
-const dir = testDataDir('deployment/parseComposeFile')
+const dir = testDataDir('deployment/vps/parseComposeFile')
 
 const contentOf = (name: string) => readFile(dir + '/' + name)
 

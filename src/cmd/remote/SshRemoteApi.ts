@@ -1,6 +1,7 @@
-import { CopyTextFileOpts } from 'src/remote/index'
-import { LocalPath, Logger, RemoteApi, SshOpts } from 'src/types'
+import { CopyTextFileOpts } from 'src/cmd/remote/index'
+import { LocalPath, Log, LogMsg, RemoteApi, SshOpts } from 'src'
 import { execSync } from 'child_process'
+import { minimalLogger } from 'src/log/MinimalLogger'
 
 const connectionArg = (opts: SshOpts) => {
     let url = opts.host
@@ -17,7 +18,7 @@ const sshCmd = (
     opts: SshOpts,
     returnStdout: boolean,
     stdIn?: string,
-    log?: Logger
+    log?: LogMsg
 ): string | null => {
     cmd = cmd.replace(/'/g, "\\'")
     const args = connectionArg(opts)
@@ -42,7 +43,7 @@ const sshCmd = (
 
 export type SshApiOpts = {
     ssh: SshOpts
-    log?: Logger
+    log?: Log
 }
 
 class CmdBuilder {
@@ -66,11 +67,11 @@ const ensureLocalPath = (path: LocalPath) => {
 
 class SshApi implements RemoteApi {
     readonly opts: SshOpts
-    readonly log: Logger
+    readonly log: Log
 
     constructor(opts: SshApiOpts) {
         this.opts = opts.ssh
-        this.log = opts.log || (() => undefined)
+        this.log = opts.log || minimalLogger()
         this.ensureNotRoot()
     }
 
@@ -90,7 +91,7 @@ class SshApi implements RemoteApi {
         cmds.add(`cat > ${path}`)
 
         const cmd = cmds.cmd()
-        sshCmd(cmd, this.opts, false, content || '\n', this.log)
+        sshCmd(cmd, this.opts, false, content || '\n', this.log.debug)
     }
 
     ensureDir = (path: LocalPath) => {
@@ -108,7 +109,7 @@ class SshApi implements RemoteApi {
             this.opts,
             !!returnStdout,
             undefined,
-            this.log
+            this.log.debug
         )
 
         if (res != null) return res.trim()
@@ -117,8 +118,14 @@ class SshApi implements RemoteApi {
     }
 
     private ensureNotRoot = () => {
-        this.log('Ensuring SSH user is not root')
-        const userName = sshCmd('whoami', this.opts, true, undefined, this.log)
+        this.log.info('Ensuring SSH user is not root')
+        const userName = sshCmd(
+            'whoami',
+            this.opts,
+            true,
+            undefined,
+            this.log.debug
+        )
         if (userName === 'root')
             throw new Error('SSH user is root. This is now allowed.')
     }

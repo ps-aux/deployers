@@ -1,4 +1,4 @@
-export type DeploymentCmdOpts = {
+export type VpsDeployOps = {
     host: string
     dir: string
     ssh?: {

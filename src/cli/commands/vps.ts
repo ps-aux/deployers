@@ -1,11 +1,13 @@
 import { Argv, CommandModule } from 'yargs'
-import { deployApp } from 'src/deployment/vps/cmds/deployApp'
+import { deployVpsApp } from 'src/deployment/vps/cmds/deployVpsApp'
 import { absPath } from 'src/cli/pathResolver'
-import { deployConfig } from 'src/deployment/vps/cmds/deployConfig'
+import { deployVpsConfig } from 'src/deployment/vps/cmds/deployVpsConfig'
 import { Context } from 'src/cli/Context'
-import { DeploymentCmdOpts } from 'src/deployment/vps/types'
+import { VpsDeployOps } from 'src/deployment/vps/types'
+import { deployAppCmd } from 'src/cli/commands/deployAppOptions'
+import { deployConfigCmd } from 'src/cli/commands/deployConfigOptions'
 
-const extractArgs = (args: any): DeploymentCmdOpts => {
+const extractOps = (args: any): VpsDeployOps => {
     const res = {
         dir: absPath(args.dir as string),
         host: args.host as string,
@@ -22,35 +24,28 @@ const extractArgs = (args: any): DeploymentCmdOpts => {
 
 const vpsCmd = (execCtx: Context): CommandModule => ({
     command: 'vps',
-    describe: 'VPS based deployment',
+    describe: 'VPS based deployment commands',
     builder: (y: Argv) =>
         y
-            .command(
-                'app <app-version>', // We cannot use version as it is always boolean (probably conflicts with --version functionality)
-                'Deploys given version of application',
-                y => {
-                    y.positional('appVersion', {
-                        type: 'string',
-                        description: 'Version of app to be deployed'
-                    })
-
-                    y.option({
-                        copyFromRepo: {
-                            type: 'string'
-                        }
-                    })
-                },
-                args => {
-                    deployApp(
-                        args.appVersion as string,
-                        extractArgs(args),
-                        execCtx,
-                        args.copyFromRepo as string
+            .command({
+                ...deployAppCmd,
+                handler: args => {
+                    deployVpsApp(
+                        deployAppCmd.extractOps(args),
+                        extractOps(args),
+                        execCtx
                     )
                 }
-            )
-            .command('config', 'Deploys application config', {}, args => {
-                deployConfig(extractArgs(args), execCtx, !!args.restart)
+            })
+            .command({
+                ...deployConfigCmd,
+                handler: args => {
+                    deployVpsConfig(
+                        deployConfigCmd.extractOps(args),
+                        extractOps(args),
+                        execCtx
+                    )
+                }
             })
             .options({
                 dir: {
@@ -66,9 +61,6 @@ const vpsCmd = (execCtx: Context): CommandModule => ({
                 },
                 'ssh-port': {
                     type: 'number'
-                },
-                restart: {
-                    type: 'boolean'
                 }
             })
             .demandCommand(),

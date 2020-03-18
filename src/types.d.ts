@@ -2,18 +2,24 @@
  * Path local to a given dir.
  * Nop absolute path and not starting with .. or .
  */
-import { CopyTextFileOpts } from 'src/remote'
+import { CopyTextFileOpts } from 'src/cmd/remote'
 
 export type LocalPath = string
 
-export type Logger = (...args: any) => void
+export type LogMsg = (...args: any) => void
 
-export type DeployAppOpts = {
+export type Log = {
+    info: LogMsg
+    debug: LogMsg
+    error: LogMsg
+}
+
+export type DeployAppOps = {
     copyFromRepo?: string
 }
 
 export interface Deployer {
-    deployApp: (version: string, opts?: DeployAppOpts) => void
+    deployApp: (version: string, opts?: DeployAppOps) => void
     deployConfig: (restart: boolean) => void
 }
 

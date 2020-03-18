@@ -1,4 +1,4 @@
-import { LocalPath } from 'src/types'
+import { LocalPath } from 'src'
 
 export type CopyTextFileOpts = { createIntermediateDirs?: boolean }
 

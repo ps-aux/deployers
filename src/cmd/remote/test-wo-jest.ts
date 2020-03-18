@@ -1,4 +1,4 @@
-import { createSshApi } from './SshRemoteApi'
+import { createSshApi } from 'src/cmd/remote/SshRemoteApi'
 
 /**
  * Manual test for purposes when password prompt is required.
@@ -13,8 +13,7 @@ const sshOpts = {
 }
 
 const ssh = createSshApi({
-    ssh: sshOpts,
-    log: console.log
+    ssh: sshOpts
 })
 
 ssh.execRemoteCmd('eew', 'echo haha')

@@ -1,9 +1,9 @@
 import {
-    DeployAppOpts,
+    DeployAppOps,
     Deployer,
     DoTemplate,
     LocalPath,
-    Logger,
+    Log,
     RemoteApi
 } from 'src'
 import {
@@ -16,10 +16,7 @@ import { readSopsFile } from 'src/encryption/readSopsFile'
 import { parseComposeFile } from 'src/deployment/vps/parseComposeFile'
 import { copyBetweenRepos } from 'src/docker/copyBetweenRepos'
 import { DockerCompose, DockerComposeApi } from 'src/docker/DockerCompose'
-
-type FsDeployerOpts = {
-    log?: Logger
-}
+import { minimalLogger } from 'src/log/MinimalLogger'
 
 const deploymentsRoot = 'deployments'
 
@@ -27,7 +24,7 @@ class DockerDeployer implements Deployer {
     readonly cfg: DeploymentConfig
     readonly remote: RemoteApi
     readonly remoteDir: string
-    readonly log: Logger
+    readonly log: Log
     readonly template: DoTemplate
     readonly deploymentLogInfo: string
     readonly compose: DockerComposeApi
@@ -36,12 +33,12 @@ class DockerDeployer implements Deployer {
         dir: string,
         remoteApi: RemoteApi,
         template: DoTemplate,
-        opts: FsDeployerOpts = {}
+        log?: Log
     ) {
         this.cfg = readDeploymentConfig(dir)
         this.remote = remoteApi
         this.remoteDir = deploymentsRoot + '/' + this.cfg.info.name
-        this.log = opts.log || (() => undefined)
+        this.log = log || minimalLogger()
         this.template = template
         this.deploymentLogInfo = this.cfg.info.name
 
@@ -50,15 +47,15 @@ class DockerDeployer implements Deployer {
         )
     }
 
-    deployApp = (version: string, opts: DeployAppOpts = {}) => {
-        this.log(
+    deployApp = (version: string, opts: DeployAppOps = {}) => {
+        this.log.info(
             `Deploying app. Deployment='${this.cfg.info.name}', Compose file=${this.cfg.composeFilePath}`
         )
 
         let content = readFile(this.cfg.composeFilePath)
 
         const { imageName } = parseComposeFile(content)
-        this.log(`Image=${imageName}, version=${version}`)
+        this.log.info(`Image=${imageName}, version=${version}`)
 
         if (opts.copyFromRepo) {
             this.copyDockerImageBetweenRepo(
@@ -74,7 +71,9 @@ class DockerDeployer implements Deployer {
         this.deployFile('docker-compose.yml', content)
 
         this.compose.start()
-        this.log('New version of app deployed. Check if it is running properly')
+        this.log.info(
+            'New version of app deployed. Check if it is running properly'
+        )
     }
 
     private copyDockerImageBetweenRepo(
@@ -82,13 +81,13 @@ class DockerDeployer implements Deployer {
         dst: string,
         version: string
     ) {
-        this.log(`Will copy image '${dst}' from '${src}'`)
+        this.log.info(`Will copy image '${dst}' from '${src}'`)
         copyBetweenRepos(src, dst, version)
     }
 
     deployConfig = (restartApp?: boolean) => {
         const envPath = this.cfg.envFilePath
-        this.log(
+        this.log.info(
             `Deploying config. Deployment='${this.cfg.info.name}', Config file=${envPath}`
         )
 
@@ -96,20 +95,22 @@ class DockerDeployer implements Deployer {
 
         if (isSopsEncryptedFile(envPath, content)) {
             content = readSopsFile(envPath)
-            this.log('File is encrypted. Will delegate to SOPS to decrypt. ')
+            this.log.info(
+                'File is encrypted. Will delegate to SOPS to decrypt. '
+            )
         }
 
         this.deployFile('.env', content)
 
         if (restartApp) {
-            this.log('Restarting app service')
+            this.log.info('Restarting app service')
             this.compose.restart()
         }
-        this.log('Config deployed')
+        this.log.info('Config deployed')
     }
 
     private deployFile = (path: LocalPath, content: string) => {
-        this.log(`Deploying file '${path}'`)
+        this.log.info(`Deploying file '${path}'`)
         const dir = this.remoteDir
         this.remote.ensureDir(dir)
         this.remote.copyTextFile(dir, path, content)

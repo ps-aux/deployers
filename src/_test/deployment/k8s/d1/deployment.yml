@@ -1,0 +1,25 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name:  rcp-server
+  namespace: dev
+  labels:
+    name: rcp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rcp-server
+  template:
+    metadata:
+      labels:
+        app: rcp-server
+    spec:
+      containers:
+        - name:  rcp-server
+          image: eu.gcr.io/kubernetes-208711/rcp-server:{{ version }}
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: rcp-server
