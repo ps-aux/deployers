@@ -1,25 +1,25 @@
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  rcp-server
+  name:  kuard-deployers-test
   namespace: dev
   labels:
-    name: rcp-server
+    name: kuard-deployers-test
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: rcp-server
+      app: kuard-deployers-test
   template:
     metadata:
       labels:
-        app: rcp-server
+        app: kuard-deployers-test
     spec:
       containers:
-        - name:  rcp-server
-          image: eu.gcr.io/kubernetes-208711/rcp-server:{{ version }}
+        - name:  kuard-deployers-test
+          image: gcr.io/kuar-demo/kuard-amd64:{{ version }}
           ports:
             - containerPort: 80
           envFrom:
             - configMapRef:
-                name: rcp-server
+                name: kuard-deployers-test

@@ -1,7 +1,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: rcp-server
+  name: kuard-deployers-test
   namespace: dev
 data:
   foo: bar
