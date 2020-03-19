@@ -6,13 +6,18 @@ import { template } from 'src/templating/engine/template'
 import DockerDeployer from 'src/deployment/vps/DockerDeployer'
 import { ConsoleLogger } from 'src/log/ConsoleLogger'
 import Path from 'path'
+import {
+    createK8sDeployer,
+    K8sDeployOps
+} from 'src/deployment/k8s/createK8sDeployer'
 
 export type Context = {
     log: () => Log
     config: () => Config
     normalizeDir: (dir: string) => string
     envConfig: (env: string) => EnvConfig
-    createDockerDeployer: (srcDir: string, sshOpts: SshOpts) => Deployer
+    createVpsDeployer: (srcDir: string, sshOpts: SshOpts) => Deployer
+    createK8sDeployer: (ops: K8sDeployOps) => Deployer
 }
 
 class ContextImpl implements Context {
@@ -45,13 +50,18 @@ class ContextImpl implements Context {
         return envCfg
     }
 
-    createDockerDeployer = (srcDir: string, sshOpts: SshOpts) => {
+    createVpsDeployer = (srcDir: string, sshOpts: SshOpts) => {
         const remoteApi = createSshApi({
             ssh: sshOpts,
             log: this.log()
         })
 
         return new DockerDeployer(srcDir, remoteApi, template, this.log())
+    }
+
+    createK8sDeployer = (ops: K8sDeployOps) => {
+        const d = createK8sDeployer(ops, this)
+        return d
     }
 
     log = () => this._log

@@ -1,10 +1,12 @@
 import { Argv, CommandModule } from 'yargs'
-import { deployVpsApp } from 'src/deployment/vps/cmds/deployVpsApp'
-import { deployVpsConfig } from 'src/deployment/vps/cmds/deployVpsConfig'
 import { Context } from 'src/cli/Context'
 import { VpsDeployOps } from 'src/deployment/vps/types'
 import { deployAppCmd } from 'src/cli/commands/deployAppOptions'
 import { deployConfigCmd } from 'src/cli/commands/deployConfigOptions'
+import {
+    deployVpsApp,
+    deployVpsConfig
+} from 'src/deployment/vps/cmds/deployCmds'
 
 const extractOps = (args: any, ctx: Context): VpsDeployOps => {
     const res = {

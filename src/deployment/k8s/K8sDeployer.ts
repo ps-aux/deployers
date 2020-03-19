@@ -1,4 +1,4 @@
-import { DeployAppOps, Deployer, DoTemplate } from 'src'
+import { DeployAppCmd, DeployConfigCmd, Deployer, DoTemplate } from 'src'
 import { resolveRequiredDirFiles } from 'src/fs/dir/resolveDirFiles'
 import Kubectl from 'src/k8s/kubectl/Kubectl'
 import { readFile } from 'src/fs/readFile'
@@ -20,12 +20,12 @@ export class K8sDeployer implements Deployer {
         this.template = template
     }
 
-    deployApp = (version: string, opts?: DeployAppOps) => {
-        if (opts?.copyFromRepo)
+    deployApp = (cmd: DeployAppCmd) => {
+        if (cmd.copyFromRepo)
             throw new Error(
                 'App deployment with copyFromRepo not implemented yet '
             )
-        const man = this.getDeploymentManifest(this.deploymentPath, version)
+        const man = this.getDeploymentManifest(this.deploymentPath, cmd.version)
 
         this.kubectl.apply(man)
     }
@@ -37,8 +37,8 @@ export class K8sDeployer implements Deployer {
         return this.template(readFile(templatePath), { version })
     }
 
-    deployConfig = (restart: boolean) => {
-        if (restart)
+    deployConfig = (cmd: DeployConfigCmd) => {
+        if (cmd.restart)
             throw new Error(
                 'Config deployment with restart not implemented yet'
             )

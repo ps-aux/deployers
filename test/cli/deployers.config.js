@@ -18,6 +18,11 @@ module.exports = {
                 type: 'url',
                 value: 'https://version.bar'
             }
+        },
+        koo: {
+            type: 'k8s',
+            target: 'koo-cluster',
+            dir: 'koo-dir'
         }
     },
     versionProviders: {

@@ -9,7 +9,10 @@ export type K8sDeployOps = {
     cluster: string
 }
 
-export const createK8sDeployer = (ops: K8sDeployOps, ctx: Context) => {
+export const createK8sDeployer = (
+    ops: K8sDeployOps,
+    ctx: Context
+): K8sDeployer => {
     const d = new K8sDeployer(
         ops.dir,
         new Kubectl(ops.cluster, new LocalShellCmdExecutor()),

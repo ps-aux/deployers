@@ -1,9 +1,5 @@
 import { Argv } from 'yargs'
-
-export type DeployAppCmdOps = {
-    version: string
-    copyFromRepo?: string
-}
+import { DeployAppCmd } from 'src'
 
 export const deployAppCmd = {
     command: 'app <app-version>',
@@ -19,7 +15,7 @@ export const deployAppCmd = {
                     type: 'string'
                 }
             }),
-    extractOps: (args: any): DeployAppCmdOps => ({
+    extractOps: (args: any): DeployAppCmd => ({
         version: args.appVersion as string,
         copyFromRepo: args.copyFromRepo as string
     })

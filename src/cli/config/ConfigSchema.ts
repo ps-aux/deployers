@@ -18,7 +18,7 @@ const SshSchema = () =>
 
 const EnvConfigSchema = () =>
     Joi.object({
-        type: Joi.string().equal(DeploymentType.VPS),
+        type: [DeploymentType.VPS, DeploymentType.K8S],
         target: Joi.string(),
         dir: Joi.string(),
         ssh: SshSchema().optional(),

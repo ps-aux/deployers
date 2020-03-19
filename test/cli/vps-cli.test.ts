@@ -2,6 +2,12 @@ import { createContext } from 'src/cli/Context'
 import { expectCliInvoked } from 'test/cli/expectCliInvoked'
 import Path from 'path'
 
+// @ts-ignore
+// to detect fails
+process.exit = () => {
+    console.log('not exiting')
+}
+
 describe('env CLI', () => {
     const deployer = {
         deployApp: jest.fn(),
@@ -9,7 +15,7 @@ describe('env CLI', () => {
     }
 
     const ctx = createContext(__dirname)
-    ctx.createDockerDeployer = (dir, sshOpts) => {
+    ctx.createVpsDeployer = (dir, sshOpts) => {
         expect(dir).toBe(Path.resolve(__dirname, 'my-dir'))
         expect(sshOpts).toEqual({
             host: 'my-host',
@@ -27,6 +33,10 @@ describe('env CLI', () => {
     testWasCalled(
         'vps config --dir my-dir --host my-host --ssh--port 1234 --ssh-user=my-user --restart',
         deployer.deployConfig,
-        [true]
+        [
+            {
+                restart: true
+            }
+        ]
     )
 })

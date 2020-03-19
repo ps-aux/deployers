@@ -14,13 +14,18 @@ export type Log = {
     error: LogMsg
 }
 
-export type DeployAppOps = {
+export type DeployAppCmd = {
+    version: string
     copyFromRepo?: string
 }
 
+export type DeployConfigCmd = {
+    restart: boolean
+}
+
 export interface Deployer {
-    deployApp: (version: string, opts?: DeployAppOps) => void
-    deployConfig: (restart: boolean) => void
+    deployApp: (cmd: DeployAppCmd) => void
+    deployConfig: (cmd: DeployConfigCmd) => void
 }
 
 export interface VersionDetector {

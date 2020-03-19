@@ -1,10 +1,12 @@
 import { Argv, CommandModule } from 'yargs'
 import { Context } from 'src/cli/Context'
 import { deployAppCmd } from 'src/cli/commands/deployAppOptions'
-import { deployK8sApp } from 'src/deployment/k8s/cmds/deployK8sApp'
+import {
+    deployK8sApp,
+    deployK8sConfig
+} from 'src/deployment/k8s/cmds/deployCmds'
 import { deployConfigCmd } from 'src/cli/commands/deployConfigOptions'
-import { deployK8sConfig } from 'src/deployment/k8s/cmds/deployK8sConfig'
-import { K8sDeployOps } from 'src/deployment/k8s/cmds/createK8sDeployer'
+import { K8sDeployOps } from 'src/deployment/k8s/createK8sDeployer'
 
 const extractOpts = (args: any, ctx: Context): K8sDeployOps => ({
     dir: ctx.normalizeDir(args.dir as string),

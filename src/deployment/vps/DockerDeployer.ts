@@ -1,5 +1,6 @@
 import {
-    DeployAppOps,
+    DeployAppCmd,
+    DeployConfigCmd,
     Deployer,
     DoTemplate,
     LocalPath,
@@ -47,7 +48,8 @@ class DockerDeployer implements Deployer {
         )
     }
 
-    deployApp = (version: string, opts: DeployAppOps = {}) => {
+    deployApp = (cmd: DeployAppCmd) => {
+        const { version } = cmd
         this.log.info(
             `Deploying app. Deployment='${this.cfg.info.name}', Compose file=${this.cfg.composeFilePath}`
         )
@@ -57,9 +59,9 @@ class DockerDeployer implements Deployer {
         const { imageName } = parseComposeFile(content)
         this.log.info(`Image=${imageName}, version=${version}`)
 
-        if (opts.copyFromRepo) {
+        if (cmd.copyFromRepo) {
             this.copyDockerImageBetweenRepo(
-                opts.copyFromRepo,
+                cmd.copyFromRepo,
                 imageName,
                 version
             )
@@ -85,7 +87,7 @@ class DockerDeployer implements Deployer {
         copyBetweenRepos(src, dst, version)
     }
 
-    deployConfig = (restartApp?: boolean) => {
+    deployConfig = (cmd: DeployConfigCmd) => {
         const envPath = this.cfg.envFilePath
         this.log.info(
             `Deploying config. Deployment='${this.cfg.info.name}', Config file=${envPath}`
@@ -102,7 +104,7 @@ class DockerDeployer implements Deployer {
 
         this.deployFile('.env', content)
 
-        if (restartApp) {
+        if (cmd.restart) {
             this.log.info('Restarting app service')
             this.compose.restart()
         }

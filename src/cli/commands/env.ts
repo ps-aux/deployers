@@ -1,20 +1,21 @@
 import { Argv, CommandModule } from 'yargs'
-import {
-    deployEnvApp,
-    deployEnvAppBasedOnEnv
-} from 'src/deployment/vps/cmds/deployVpsApp'
-import { deployConfigFromEnv } from 'src/deployment/vps/cmds/deployVpsConfig'
 import { Context } from 'src/cli/Context'
 import { deployConfigCmd } from 'src/cli/commands/deployConfigOptions'
+import { deployAppCmd } from 'src/cli/commands/deployAppOptions'
+import {
+    deployEnvApp,
+    deployEnvAppVersionFromOtherEnv
+} from 'src/deployment/env/cmds/deployEnvApp'
+import { deployEnvConfig } from 'src/deployment/env/cmds/deployEnvConfig'
 
-const envCmd = (execCtx: Context): CommandModule => ({
+const envCmd = (ctx: Context): CommandModule => ({
     command: 'env',
     describe: 'Deployment based on environment config',
     builder: (y: Argv) =>
         y
             .command(
-                'app <app-version>', // We cannot use version as it is always boolean (probably conflicts with --version functionality)
-                'Deploys given version of application',
+                deployAppCmd.command,
+                deployAppCmd.description,
                 y => {
                     y.positional('app-version', {
                         type: 'string',
@@ -25,7 +26,7 @@ const envCmd = (execCtx: Context): CommandModule => ({
                     deployEnvApp(
                         args.env as string,
                         args.appVersion as string,
-                        execCtx
+                        ctx
                     )
                 }
             )
@@ -39,21 +40,20 @@ const envCmd = (execCtx: Context): CommandModule => ({
                             'Env from which to the detect current version'
                     })
                 },
-                args => {
-                    deployEnvAppBasedOnEnv(
+                async args =>
+                    deployEnvAppVersionFromOtherEnv(
                         args.env as string,
                         args.fromEnv as string,
-                        execCtx
+                        ctx
                     )
-                }
             )
             .command({
                 ...deployConfigCmd,
                 handler: args => {
-                    deployConfigFromEnv(
+                    deployEnvConfig(
                         deployConfigCmd.extractOps(args),
                         args.env as string,
-                        execCtx
+                        ctx
                     )
                 }
             })

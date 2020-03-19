@@ -1,8 +1,5 @@
 import { Argv } from 'yargs'
-
-export type DeployConfigCmdOps = {
-    restart?: boolean
-}
+import { DeployConfigCmd } from 'src'
 
 export const deployConfigCmd = {
     command: 'config',
@@ -13,7 +10,7 @@ export const deployConfigCmd = {
                 type: 'boolean'
             }
         }),
-    extractOps: (args: any): DeployConfigCmdOps => ({
-        restart: args.restart as boolean
+    extractOps: (args: any): DeployConfigCmd => ({
+        restart: (args.restart as boolean) || false
     })
 }
