@@ -35,7 +35,8 @@ module.exports = {
                 '*.spec.js',
                 '*.test.*ts',
                 '*.spec.*ts',
-                'src/test/**'
+                'src/test/**',
+                'test/**'
             ],
             globals: {
                 jest: true,

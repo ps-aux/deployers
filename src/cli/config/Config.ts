@@ -1,7 +1,5 @@
-import Joi from '@hapi/joi'
-import { ensureValidDir } from 'src/fs/dir/isValidDir'
-import Path from 'path'
 import { AxiosInstance } from 'axios'
+import { ConfSchema } from 'src/cli/config/ConfigSchema'
 
 export type Ssh = {
     user?: string
@@ -41,40 +39,10 @@ export type Config = {
     versionProviders: { [key: string]: VersionProvider }
 }
 
-const VersionProviderSchema = () =>
-    Joi.object({
-        type: Joi.string().equal(
-            VersionProviderType.URL,
-            VersionProviderType.FUNCTION
-        ),
-        value: [Joi.string(), Joi.function()]
-    })
-
-const SshSchema = () =>
-    Joi.object({
-        user: Joi.string().optional(),
-        port: Joi.number().optional()
-    })
-
-const EnvConfigSchema = () =>
-    Joi.object({
-        type: Joi.string().equal(DeploymentType.VPS),
-        target: Joi.string(),
-        dir: Joi.string(),
-        ssh: SshSchema().optional(),
-        copyFromRepo: Joi.string().optional(),
-        versionProvider: VersionProviderSchema().optional()
-    })
-
-const ConfSchema = () =>
-    Joi.object({
-        envs: Joi.object().pattern(Joi.string(), EnvConfigSchema()),
-        versionProviders: Joi.object()
-            .pattern(Joi.string(), VersionProviderSchema())
-            .optional()
-    })
-
-export const processConfig = (maybeCfg: object, rootDir: string): Config => {
+export const processConfig = (
+    maybeCfg: object,
+    normalizeDir: (s: string) => string
+): Config => {
     const r = ConfSchema().validate(maybeCfg, {
         presence: 'required',
         allowUnknown: false
@@ -85,10 +53,7 @@ export const processConfig = (maybeCfg: object, rootDir: string): Config => {
     const cfg = maybeCfg as Config
 
     Object.values(cfg.envs).forEach(e => {
-        if (!Path.isAbsolute(e.dir)) {
-            e.dir = rootDir + '/' + e.dir
-        }
-        ensureValidDir(e.dir)
+        e.dir = normalizeDir(e.dir)
     })
 
     return cfg as Config

@@ -1,6 +1,9 @@
 import { processConfig } from 'src/cli/config/Config'
+import Path from 'path'
 
 describe('processConfig', () => {
+    const normalize = (d: string) => Path.resolve(__dirname, d)
+
     const valid = () => ({
         envs: {
             foo: {
@@ -12,7 +15,7 @@ describe('processConfig', () => {
     })
 
     it('valid', () => {
-        processConfig(valid(), __dirname)
+        processConfig(valid(), normalize)
     })
 
     it('bad schema detected', () => {
@@ -20,18 +23,8 @@ describe('processConfig', () => {
 
         delete input.envs.foo.type
 
-        expect(() => processConfig(input, __dirname)).toThrowError(
+        expect(() => processConfig(input, normalize)).toThrowError(
             'Invalid config."envs.foo.type" is required'
-        )
-    })
-
-    it('bad dir detected', () => {
-        const input = valid()
-
-        input.envs.foo.dir = 'non-existent'
-
-        expect(() => processConfig(input, __dirname)).toThrowError(
-            `${__dirname}/non-existent is not a directory`
         )
     })
 })

@@ -5,28 +5,34 @@ import { createSshApi } from 'src/cmd/remote/SshRemoteApi'
 import { template } from 'src/templating/engine/template'
 import DockerDeployer from 'src/deployment/vps/DockerDeployer'
 import { ConsoleLogger } from 'src/log/ConsoleLogger'
+import Path from 'path'
 
 export type Context = {
     log: () => Log
     config: () => Config
+    normalizeDir: (dir: string) => string
     envConfig: (env: string) => EnvConfig
     createDockerDeployer: (srcDir: string, sshOpts: SshOpts) => Deployer
 }
 
 class ContextImpl implements Context {
     private readonly _log: Log
+    private readonly rootDir: string
 
-    constructor() {
+    constructor(rootDir: string) {
         this._log = new ConsoleLogger()
+        this.rootDir = rootDir
     }
 
     config = () => {
-        const cfg = findConfig()
+        const cfg = findConfig(this.rootDir, this.normalizeDir)
 
         if (!cfg) throw new Error('No user config present')
 
         return cfg
     }
+
+    normalizeDir = (dir: string) => Path.resolve(this.rootDir, dir)
 
     envConfig = (env: string) => {
         // @ts-ignore
@@ -51,6 +57,6 @@ class ContextImpl implements Context {
     log = () => this._log
 }
 
-export const createContext = (): Context => {
-    return new ContextImpl()
+export const createContext = (rootDir: string): Context => {
+    return new ContextImpl(rootDir)
 }

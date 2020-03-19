@@ -1,15 +1,14 @@
 import { Argv, CommandModule } from 'yargs'
 import { deployVpsApp } from 'src/deployment/vps/cmds/deployVpsApp'
-import { absPath } from 'src/cli/pathResolver'
 import { deployVpsConfig } from 'src/deployment/vps/cmds/deployVpsConfig'
 import { Context } from 'src/cli/Context'
 import { VpsDeployOps } from 'src/deployment/vps/types'
 import { deployAppCmd } from 'src/cli/commands/deployAppOptions'
 import { deployConfigCmd } from 'src/cli/commands/deployConfigOptions'
 
-const extractOps = (args: any): VpsDeployOps => {
+const extractOps = (args: any, ctx: Context): VpsDeployOps => {
     const res = {
-        dir: absPath(args.dir as string),
+        dir: ctx.normalizeDir(args.dir as string),
         host: args.host as string,
         ssh: {
             user: args.sshUser as string,
@@ -22,7 +21,7 @@ const extractOps = (args: any): VpsDeployOps => {
     return res
 }
 
-const vpsCmd = (execCtx: Context): CommandModule => ({
+const vpsCmd = (ctx: Context): CommandModule => ({
     command: 'vps',
     describe: 'VPS based deployment commands',
     builder: (y: Argv) =>
@@ -32,8 +31,8 @@ const vpsCmd = (execCtx: Context): CommandModule => ({
                 handler: args => {
                     deployVpsApp(
                         deployAppCmd.extractOps(args),
-                        extractOps(args),
-                        execCtx
+                        extractOps(args, ctx),
+                        ctx
                     )
                 }
             })
@@ -42,8 +41,8 @@ const vpsCmd = (execCtx: Context): CommandModule => ({
                 handler: args => {
                     deployVpsConfig(
                         deployConfigCmd.extractOps(args),
-                        extractOps(args),
-                        execCtx
+                        extractOps(args, ctx),
+                        ctx
                     )
                 }
             })

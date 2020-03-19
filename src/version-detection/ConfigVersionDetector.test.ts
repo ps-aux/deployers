@@ -3,7 +3,7 @@ import { mockAxios } from 'src/_test/mock/mockAxios'
 import { createConfigVersionDetector } from 'src/version-detection/ConfigVersionDetector'
 
 // @ts-ignore
-import cfgFile from '../../deployers.config'
+import cfgFile from 'test/cli/deployers.config'
 import { Config } from 'src/cli/config/Config'
 // Must be at the beginning
 mockAxios([
@@ -16,9 +16,9 @@ mockAxios([
     },
     {
         method: 'get',
-        url: 'https://api.moja.firmaren.garwan.io/',
+        url: 'https://version.bar',
         response: {
-            version: 'test-123'
+            version: 'bar-123'
         }
     }
 ])
@@ -31,8 +31,8 @@ it('works', async () => {
     let version = await foo.getVersion()
     expect(version).toBe('foo-123')
 
-    const test = createConfigVersionDetector(cfg, 'test')
+    const test = createConfigVersionDetector(cfg, 'bar')
 
     version = await test.getVersion()
-    expect(version).toBe('test-123')
+    expect(version).toBe('bar-123')
 })
