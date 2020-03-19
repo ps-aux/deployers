@@ -1,4 +1,4 @@
-import { isSopsEncryptedFile } from 'src/encryption/isSopsEncryptedFile'
+import { isSopsEncryptedFile } from 'src/fs/encryption/isSopsEncryptedFile'
 import { testDataDir } from 'src/_test'
 import { readFile } from 'src/fs/readFile'
 

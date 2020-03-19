@@ -11,13 +11,11 @@ import {
     DeploymentConfig,
     readDeploymentConfig
 } from 'src/deployment/vps/DockerDeploymentConfig'
-import { readFile } from 'src/fs/readFile'
-import { isSopsEncryptedFile } from 'src/encryption/isSopsEncryptedFile'
-import { readSopsFile } from 'src/encryption/readSopsFile'
 import { parseComposeFile } from 'src/deployment/vps/parseComposeFile'
 import { copyBetweenRepos } from 'src/docker/copyBetweenRepos'
 import { DockerCompose, DockerComposeApi } from 'src/docker/DockerCompose'
 import { minimalLogger } from 'src/log/MinimalLogger'
+import { EncryptedFileReader } from 'src/fs/encryption/EncryptedFileReader'
 
 const deploymentsRoot = 'deployments'
 
@@ -29,11 +27,13 @@ class DockerDeployer implements Deployer {
     readonly template: DoTemplate
     readonly deploymentLogInfo: string
     readonly compose: DockerComposeApi
+    readonly filesReader: EncryptedFileReader
 
     constructor(
         dir: string,
         remoteApi: RemoteApi,
         template: DoTemplate,
+        filesReader: EncryptedFileReader,
         log?: Log
     ) {
         this.cfg = readDeploymentConfig(dir)
@@ -42,6 +42,7 @@ class DockerDeployer implements Deployer {
         this.log = log || minimalLogger()
         this.template = template
         this.deploymentLogInfo = this.cfg.info.name
+        this.filesReader = filesReader
 
         this.compose = new DockerCompose(cmd =>
             this.remote.execRemoteCmd(this.remoteDir, cmd)
@@ -54,7 +55,7 @@ class DockerDeployer implements Deployer {
             `Deploying app. Deployment='${this.cfg.info.name}', Compose file=${this.cfg.composeFilePath}`
         )
 
-        let content = readFile(this.cfg.composeFilePath)
+        let content = this.filesReader.read(this.cfg.composeFilePath)
 
         const { imageName } = parseComposeFile(content)
         this.log.info(`Image=${imageName}, version=${version}`)
@@ -93,14 +94,7 @@ class DockerDeployer implements Deployer {
             `Deploying config. Deployment='${this.cfg.info.name}', Config file=${envPath}`
         )
 
-        let content = readFile(envPath)
-
-        if (isSopsEncryptedFile(envPath, content)) {
-            content = readSopsFile(envPath)
-            this.log.info(
-                'File is encrypted. Will delegate to SOPS to decrypt. '
-            )
-        }
+        const content = this.filesReader.read(envPath)
 
         this.deployFile('.env', content)
 

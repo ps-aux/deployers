@@ -16,7 +16,9 @@ export const createK8sDeployer = (
     const d = new K8sDeployer(
         ops.dir,
         new Kubectl(ops.cluster, new LocalShellCmdExecutor()),
-        template
+        template,
+        ctx.filesReader(),
+        ctx.log()
     )
 
     return d

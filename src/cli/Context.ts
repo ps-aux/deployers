@@ -10,6 +10,7 @@ import {
     createK8sDeployer,
     K8sDeployOps
 } from 'src/deployment/k8s/createK8sDeployer'
+import { EncryptedFileReader } from 'src/fs/encryption/EncryptedFileReader'
 
 export type Context = {
     log: () => Log
@@ -18,6 +19,7 @@ export type Context = {
     envConfig: (env: string) => EnvConfig
     createVpsDeployer: (srcDir: string, sshOpts: SshOpts) => Deployer
     createK8sDeployer: (ops: K8sDeployOps) => Deployer
+    filesReader: () => EncryptedFileReader
 }
 
 class ContextImpl implements Context {
@@ -56,7 +58,13 @@ class ContextImpl implements Context {
             log: this.log()
         })
 
-        return new DockerDeployer(srcDir, remoteApi, template, this.log())
+        return new DockerDeployer(
+            srcDir,
+            remoteApi,
+            template,
+            this.filesReader(),
+            this.log()
+        )
     }
 
     createK8sDeployer = (ops: K8sDeployOps) => {
@@ -65,6 +73,8 @@ class ContextImpl implements Context {
     }
 
     log = () => this._log
+
+    filesReader = () => new EncryptedFileReader(this.log())
 }
 
 export const createContext = (rootDir: string): Context => {
