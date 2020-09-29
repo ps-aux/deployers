@@ -78,7 +78,7 @@ const createMockK8sDeployer = (expectedOpts: K8sDeployOps) => {
     }
 
     const ctx = createContext(__dirname)
-    ctx.createK8sDeployer = o => {
+    ctx.createK8sDeployer = (o) => {
         expect(o).toEqual({
             ...expectedOpts,
             dir: Path.resolve(__dirname, expectedOpts.dir)

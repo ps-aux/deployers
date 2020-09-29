@@ -40,6 +40,7 @@ export type Config = {
 }
 
 export const processConfig = (
+    // eslint-disable-next-line @typescript-eslint/ban-types
     maybeCfg: object,
     normalizeDir: (s: string) => string
 ): Config => {
@@ -52,7 +53,7 @@ export const processConfig = (
 
     const cfg = maybeCfg as Config
 
-    Object.values(cfg.envs).forEach(e => {
+    Object.values(cfg.envs).forEach((e) => {
         e.dir = normalizeDir(e.dir)
     })
 

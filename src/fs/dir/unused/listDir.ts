@@ -21,7 +21,7 @@ export const listDir = (
     const res: DirFileItem[] = []
     const files = fs.readdirSync(dirPath)
 
-    files.forEach(p => {
+    files.forEach((p) => {
         const path = Path.join(dirPath, p)
         const stat = fs.lstatSync(path)
 
@@ -33,7 +33,7 @@ export const listDir = (
                 localPath
             })
         else if (stat.isDirectory()) {
-            listDir(path, localPath).forEach(df => res.push(df))
+            listDir(path, localPath).forEach((df) => res.push(df))
         }
     })
 

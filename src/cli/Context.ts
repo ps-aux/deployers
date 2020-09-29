@@ -11,6 +11,7 @@ import {
     K8sDeployOps
 } from 'src/deployment/k8s/createK8sDeployer'
 import { EncryptedFileReader } from 'src/fs/encryption/EncryptedFileReader'
+import { ContainerRepoSynchronizer } from 'src/deployment/container/ContainerRepoSynchronizer'
 
 export type Context = {
     log: () => Log
@@ -63,6 +64,7 @@ class ContextImpl implements Context {
             remoteApi,
             template,
             this.filesReader(),
+            new ContainerRepoSynchronizer(this.log()),
             this.log()
         )
     }

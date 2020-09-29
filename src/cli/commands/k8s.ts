@@ -20,7 +20,7 @@ const k8sCmd = (ctx: Context): CommandModule => ({
         y
             .command({
                 ...deployAppCmd,
-                handler: args => {
+                handler: (args) => {
                     deployK8sApp(
                         deployAppCmd.extractOps(args),
                         extractOpts(args, ctx),
@@ -30,7 +30,7 @@ const k8sCmd = (ctx: Context): CommandModule => ({
             })
             .command({
                 ...deployConfigCmd,
-                handler: args => {
+                handler: (args) => {
                     deployK8sConfig(
                         deployConfigCmd.extractOps(args),
                         extractOpts(args, ctx),
@@ -49,7 +49,7 @@ const k8sCmd = (ctx: Context): CommandModule => ({
                 }
             })
             .demandCommand(),
-    handler: args => {
+    handler: (args) => {
         throw new Error('Unexpected execution path')
     }
 })

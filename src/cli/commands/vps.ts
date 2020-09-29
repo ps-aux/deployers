@@ -30,7 +30,7 @@ const vpsCmd = (ctx: Context): CommandModule => ({
         y
             .command({
                 ...deployAppCmd,
-                handler: args => {
+                handler: (args) => {
                     deployVpsApp(
                         deployAppCmd.extractOps(args),
                         extractOps(args, ctx),
@@ -40,7 +40,7 @@ const vpsCmd = (ctx: Context): CommandModule => ({
             })
             .command({
                 ...deployConfigCmd,
-                handler: args => {
+                handler: (args) => {
                     deployVpsConfig(
                         deployConfigCmd.extractOps(args),
                         extractOps(args, ctx),
@@ -65,7 +65,7 @@ const vpsCmd = (ctx: Context): CommandModule => ({
                 }
             })
             .demandCommand(),
-    handler: args => {
+    handler: (args) => {
         throw new Error('Unexpected execution path')
     }
 })

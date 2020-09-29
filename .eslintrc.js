@@ -14,6 +14,8 @@ module.exports = {
         'standard/computed-property-even-spacing': 'off',
         'promise/param-names': 'off',
         indent: 'off',
+        'no-useless-constructor': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
         // So we can use comma operator
         'no-sequences': 'off',
         '@typescript-eslint/member-delimiter-style': 'off',

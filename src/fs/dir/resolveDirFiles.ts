@@ -16,11 +16,11 @@ export const resolveDirFiles = (
 
     // Create res object
     const res: { [key: string]: string | null } = {}
-    fileNames.forEach(fn => (res[fn] = null))
+    fileNames.forEach((fn) => (res[fn] = null))
 
     const files = fs.readdirSync(dir)
 
-    files.forEach(f => {
+    files.forEach((f) => {
         if (f in res) res[f] = Path.resolve(dir, f)
     })
 

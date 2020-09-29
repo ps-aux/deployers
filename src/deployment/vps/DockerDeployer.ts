@@ -12,10 +12,10 @@ import {
     readDeploymentConfig
 } from 'src/deployment/vps/DockerDeploymentConfig'
 import { parseComposeFile } from 'src/deployment/vps/parseComposeFile'
-import { copyBetweenRepos } from 'src/docker/copyBetweenRepos'
 import { DockerCompose, DockerComposeApi } from 'src/docker/DockerCompose'
 import { minimalLogger } from 'src/log/MinimalLogger'
 import { EncryptedFileReader } from 'src/fs/encryption/EncryptedFileReader'
+import { ContainerRepoSynchronizer } from 'src/deployment/container/ContainerRepoSynchronizer'
 
 const deploymentsRoot = 'deployments'
 
@@ -34,6 +34,7 @@ class DockerDeployer implements Deployer {
         remoteApi: RemoteApi,
         template: DoTemplate,
         filesReader: EncryptedFileReader,
+        private repoSync: ContainerRepoSynchronizer,
         log?: Log
     ) {
         this.cfg = readDeploymentConfig(dir)
@@ -44,7 +45,7 @@ class DockerDeployer implements Deployer {
         this.deploymentLogInfo = this.cfg.info.name
         this.filesReader = filesReader
 
-        this.compose = new DockerCompose(cmd =>
+        this.compose = new DockerCompose((cmd) =>
             this.remote.execRemoteCmd(this.remoteDir, cmd)
         )
     }
@@ -60,12 +61,9 @@ class DockerDeployer implements Deployer {
         const { imageName } = parseComposeFile(content)
         this.log.info(`Image=${imageName}, version=${version}`)
 
+        // TODO duplicate functionality and code
         if (cmd.copyFromRepo) {
-            this.copyDockerImageBetweenRepo(
-                cmd.copyFromRepo,
-                imageName,
-                version
-            )
+            this.repoSync.copyBetweenRepos(cmd.copyFromRepo, imageName, version)
         }
 
         content = this.template(content, {
@@ -77,15 +75,6 @@ class DockerDeployer implements Deployer {
         this.log.info(
             'New version of app deployed. Check if it is running properly'
         )
-    }
-
-    private copyDockerImageBetweenRepo(
-        src: string,
-        dst: string,
-        version: string
-    ) {
-        this.log.info(`Will copy image '${dst}' from '${src}'`)
-        copyBetweenRepos(src, dst, version)
     }
 
     deployConfig = (cmd: DeployConfigCmd) => {

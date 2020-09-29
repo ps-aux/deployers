@@ -7,7 +7,7 @@ const versionPropNames = ['version', 'VERSION']
 export const createUrlVersionDetector = (url: string): VersionDetector => {
     const http = Axios.create()
     const getVersion = async () => {
-        const res = await http.get(url).then(r => r.data)
+        const res = await http.get(url).then((r) => r.data)
 
         let version: string | null = null
 

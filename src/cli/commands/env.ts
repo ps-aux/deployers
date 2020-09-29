@@ -16,13 +16,13 @@ const envCmd = (ctx: Context): CommandModule => ({
             .command(
                 deployAppCmd.command,
                 deployAppCmd.description,
-                y => {
+                (y) => {
                     y.positional('app-version', {
                         type: 'string',
                         description: 'Version of app to be deployed'
                     })
                 },
-                args => {
+                (args) => {
                     deployEnvApp(
                         args.env as string,
                         args.appVersion as string,
@@ -33,14 +33,14 @@ const envCmd = (ctx: Context): CommandModule => ({
             .command(
                 'app:from <from-env>',
                 'Deploys a version of application based on a current version at the given env',
-                y => {
+                (y) => {
                     y.positional('from-env', {
                         type: 'string',
                         description:
                             'Env from which to the detect current version'
                     })
                 },
-                async args =>
+                async (args) =>
                     deployEnvAppVersionFromOtherEnv(
                         args.env as string,
                         args.fromEnv as string,
@@ -49,7 +49,7 @@ const envCmd = (ctx: Context): CommandModule => ({
             )
             .command({
                 ...deployConfigCmd,
-                handler: args => {
+                handler: (args) => {
                     deployEnvConfig(
                         deployConfigCmd.extractOps(args),
                         args.env as string,
@@ -64,7 +64,7 @@ const envCmd = (ctx: Context): CommandModule => ({
                 }
             })
             .demandCommand(),
-    handler: args => {
+    handler: (args) => {
         throw new Error('Unexpected execution path')
     }
 })

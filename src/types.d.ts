@@ -6,7 +6,7 @@ import { CopyTextFileOpts } from 'src/cmd/remote'
 
 export type LocalPath = string
 
-export type LogMsg = (...args: any) => void
+export type LogMsg = (...args: any[]) => void
 
 export type Log = {
     info: LogMsg

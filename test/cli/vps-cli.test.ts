@@ -2,6 +2,7 @@ import { createContext } from 'src/cli/Context'
 import { expectCliInvoked } from 'test/cli/expectCliInvoked'
 import Path from 'path'
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // to detect fails
 process.exit = () => {

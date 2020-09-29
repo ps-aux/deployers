@@ -7,11 +7,14 @@ import { when } from 'jest-when'
 import Axios from 'axios'
 
 export const mockAxios = (
+    // eslint-disable-next-line @typescript-eslint/ban-types
     defs: { url: string; method: string; response: object }[]
 ) => {
+    // TODO
+    // eslint-disable-next-line no-undef
     const mocks: { [method: string]: jest.Mock } = {}
 
-    defs.forEach(d => {
+    defs.forEach((d) => {
         let m = mocks[d.method]
         if (!m) {
             // eslint-disable-next-line no-undef
