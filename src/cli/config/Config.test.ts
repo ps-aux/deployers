@@ -21,6 +21,7 @@ describe('processConfig', () => {
     it('bad schema detected', () => {
         const input = valid()
 
+        // @ts-ignore
         delete input.envs.foo.type
 
         expect(() => processConfig(input, normalize)).toThrowError(
