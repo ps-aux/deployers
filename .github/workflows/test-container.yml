@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build image and publish
         # will be replace with own code later
-        uses: elgohr/Publish-Docker-Github-Action@2.11
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           name: devops-247114/deployers-test-container
           username: _json_key
